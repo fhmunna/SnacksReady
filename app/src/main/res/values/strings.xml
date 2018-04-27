@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Snacks Ready</string>
+    <string name="db_name">snacks_ready_db</string>
+
+    <string name="title_activity_main">Snacks Ready</string>
+
+    <string name="title_user_info_input">Please insert valid info</string>
+
+    <string name="reply_only">Reply</string>
+    <string name="mark_as_read">Mark as read</string>
+
+    <string name="just_now"> just now</string>
+    <string name="hour_ago"> hour ago</string>
+    <string name="hours_ago"> hours ago</string>
+    <string name="mins_ago"> minutes ago</string>
+    <string name="days_ago"> days ago</string>
+
+    <string name="logout">Log Out</string>
+    <string name="hint_input_office_id">Please insert your office id</string>
+    <string name="hint_select_avatar">Please select an avatar</string>
+    <string name="title_log_in">Log in</string>
+    <string name="title_office_id_input">Insert Office ID</string>
+    <string name="remember_me">Remember Me</string>
+
+    <integer-array name="avatars">
+        <item>@drawable/ic_male1</item>
+        <item>@drawable/ic_female1</item>
+    </integer-array>
+</resources>

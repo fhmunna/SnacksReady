@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <RelativeLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+
+        <RelativeLayout
+            android:id="@+id/layout_notify_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="1dp"
+            android:paddingTop="3dp">
+
+            <ImageView
+                android:id="@+id/image_app_red_circle"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/circle_view_red" />
+
+            <TextView
+                android:id="@+id/test_app_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="0dp"
+                android:layout_toRightOf="@+id/image_app_red_circle"
+                android:text="@string/app_name"
+                android:textColor="@color/colorRedLight"
+                android:textSize="11sp" />
+
+
+            <ImageView
+                android:id="@+id/image_dot"
+                android:layout_width="3dp"
+                android:layout_height="3dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/test_app_text"
+                android:background="@drawable/circle_view_grey" />
+
+
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="0dp"
+                android:layout_toRightOf="@+id/image_dot"
+                android:text="now"
+                android:textColor="@color/colorGray"
+                android:textSize="11sp" />
+
+            <ImageView
+                android:id="@+id/image_arrow_down"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_toRightOf="@+id/text_time" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/layout_notify_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_notify_top"
+            android:layout_marginTop="1dp"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="@string/app_name"
+                android:textColor="@color/colorGray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_marginLeft="16dp"
+                android:text="User is now InRange"
+                android:textColor="@color/colorGray"
+                android:textSize="11sp" />
+
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/image_end"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_app" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorGray"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        style="@style/LoginSignUpLabel"
+        android:text="@string/hint_select_avatar"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="5dp">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/img_ic_male_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_male1"/>
+
+            <ImageView
+                android:id="@+id/img_ic_male_1_selected"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/circle_transparent_bg"
+                app:srcCompat="@drawable/ic_confirm"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="5dp">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/img_ic_female_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_female1"/>
+
+            <ImageView
+                android:id="@+id/img_ic_female_1_selected"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/circle_transparent_bg"
+                app:srcCompat="@drawable/ic_confirm"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_office_id"
+        style="@style/LoginSignUpInput"
+        android:hint="@string/hint_input_office_id"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/ButtonPrimary"
+            android:layout_weight="1"
+            android:text="CANCEL"/>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            style="@style/ButtonGreen"
+            android:layout_weight="1"
+            android:text="CONFIRM"/>
+    </LinearLayout>
+</LinearLayout>

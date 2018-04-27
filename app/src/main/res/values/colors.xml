@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#2E7D32</color>
+    <color name="colorAccent">#4CAF50</color>
+
+    <color name="colorBg">#f7f7f7</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#ffdfdfdf</color>
+    <color name="colorRedDark">#F06423</color>
+    <color name="colorRedLight">#f75843</color>
+
+    <color name="colorPrimaryOverlay">#884CAF50</color>
+    <color name="colorBlackOverlay">#88000000</color>
+
+    <color name="light_gray">#dbdbdb</color>
+    <color name="off_color">#B2B2B2</color>
+    <color name="semi_gray">#979797</color>
+    <color name="dark_gray">#696969</color>
+    <color name="bg_color">#f7f7f7</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="off_white">#99ffffff</color>
+    <color name="black_effective">#2a2a2a</color>
+    <color name="shadow">#d0d8dc</color>
+    <color name="transparent">#00000000</color>
+    <color name="translucent_white">#88ffffff</color>
+    <color name="colorTranslucentPrimary">#aa283D49</color>
+    <color name="colorTranslucentWhite">#aaFFFFFF</color>
+    <color name="colorTranslucentGreen">#aa32B27E</color>
+    <color name="fb">@color/blue_black_light</color>
+    <color name="google">#d34836</color>
+
+    <!--Design colors-->
+    <color name="red_dark">#F06423</color>
+    <color name="deep_orange">#F75843</color>
+    <color name="light_orange">#FFFBABA1</color>
+
+    <color name="red_dark2">#FFC30016</color>
+    <color name="cyan_light">#c9ebee</color>
+    <color name="cyan">#b5e3e7</color>
+    <color name="cyan_dark">#70BDC6</color>
+    <color name="navy_blue">#214258</color>
+    <color name="navy_blue_dark">#1C3A4E</color>
+    <color name="light_green">#78DC96</color>
+    <color name="light_blue">#55C8F0</color>
+    <color name="blue_black_dark">#13171d</color>
+    <color name="blue_black_light">#516179</color>
+    <color name="blue_grey_light">#A5B4C8</color>
+    <color name="orange">#FFA500</color>
+    <color name="yellow">#fff44f</color>
+    <color name="ash_color">#acacac</color>
+    <color name="ash_color_light">#E2E2E2</color>
+    <color name="color">#5E776D</color>
+    <color name="light_gray_light">#E8E8E8</color>
+    <color name="text_light_gray">#587685</color>
+
+
+    <color name="grey_1">#FF939393</color>
+    <color name="grey_2">#FF6B6B6B</color>
+    <color name="grey_3">#f7f7f7</color>
+    <color name="grey_5">#f2f2f2</color>
+    <color name="grey_6">#FF3B3B3B</color>
+    <color name="grey_9">#FF6C6C6C</color>
+    <color name="grey_7">#FFD3D3D3</color>
+    <color name="grey_10">#e6e6e6</color>
+    <color name="grey_11">#FFD9D9D9</color>
+    <color name="grey_12">#FF1E2E39</color>
+    <color name="grey_13">#FF5B5B5B</color>
+    <color name="grey_14">#FF313131</color>
+    <color name="grey_16">#FF283D49</color>
+    <color name="grey_17">#FF979797</color>
+    <color name="grey_18">#FF4C4C4C</color>
+    <color name="grey_19">#DFDFDF</color>
+    <color name="grey_20">#cccccc</color>
+    <color name="grey_21">#FF6E6E6E</color>
+    <color name="grey_22">#FFDADADA</color>
+    <color name="grey_23">#FFE2E2E2</color>
+    <color name="grey_24">#FF3C3C3C</color>
+    <color name="grey_25">#FF5D5D5D</color>
+    <color name="grey_40">#999999</color>
+    <color name="grey_60">#666666</color>
+    <color name="grey_80">#37474F</color>
+    <color name="grey_90">#263238</color>
+    <color name="grey_91">#FF282828</color>
+    <color name="grey_92">#FF505050</color>
+
+    <color name="colorRipple">#A9A9F5</color>
+    <color name="colorFab">#127AC6</color>
+    <color name="colorStatic">#8ED0B1</color>
+    <color name="colorOutOfRange">#939393</color>
+
+    <color name="tab_color_normal">#939393</color>
+
+    <color name="red_light">#f75843</color>
+
+
+    <!--Theme colors-->
+    <color name="color_app_tab">#ff0f0f</color>
+    <color name="app_tab_bg">#FF603D</color>
+    <color name="app_toolbar_bg">#f52c0f</color>
+    <color name="app_switch_button_track_color">#FBABA1</color>
+    <color name="app_switch_button_thumb_color">#FF603D</color>
+    <color name="app_user_name_color">#F75843</color>
+
+    <color name="color_green">#FF32B27E</color>
+    <color name="color_light_green">#FFA5DFC4</color>
+    <color name="color_red">#FFF24034</color>
+
+    <color name="project_green">#2EB47F</color>
+
+    <!--Range States-->
+    <color name="status_in_range">#2EB47F</color>
+    <color name="status_out_of_range">#FF939393</color>
+    <color name="status_static">#802CB272</color>
+
+    <color name="drawer_right_bg">#FF283D49</color>
+
+    <!--My Profile-->
+    <color name="color_deep_green">#FF283D49</color>
+    <color name="active_app_background">#FFFF1E00</color>
+    <color name="active_app_status_bar">#40000000</color>
+    <color name="app_mode_statusbar_color">#FFBF1600</color>
+    <color name="border_red">#FFE42100</color>
+    <color name="app_red">#FFFF0000</color>
+    <color name="app_popup_bg">#FFFF4027</color>
+    <color name="app_popup_hints">#FF757575</color>
+    <color name="app_popup_footer_bg">#313131</color>
+    <color name="app_popup_disabled_send">#FF767676</color>
+    <color name="app_popup_app_enabled_send">#FFFA5F53</color>
+    <color name="app_popup_test_app_enabled_send">#78DC96</color>
+
+    <color name="green_light">#FF98D8BE</color>
+    <color name="green_deep">#FF32B27E</color>
+
+    <color name="white_effective">#ffffff</color>
+
+    <!--==========================================================================================-->
+    <!--LOGIN AND SIGNUP CATEGORY-->
+    <!--==========================================================================================-->
+
+    <!--style 1-->
+    <color name="loginSignup1colorPrimary">#fe5824</color>
+    <color name="loginSignup1colorPrimaryDark">#e94a18</color>
+    <color name="loginSignup1colorAccent">#fe5824</color>
+    <color name="loginSignup1Background">#f1f5f8</color>
+    <color name="loginSignup11text">#636363</color>
+
+    <!--style 2-->
+    <color name="LoginSignup2colorAccent">#fe5824</color>
+    <color name="loginSignup2InputBg">#f1f5f8</color>
+
+    <!--==========================================================================================-->
+    <!--Buttons-->
+    <!--==========================================================================================-->
+    <color name="button_orange">#fe5824</color>
+    <color name="button_white">@android:color/white</color>
+    <color name="button_blue">#40579b</color>
+    <color name="button_green">#43bd42</color>
+    <color name="button_gray">#f1f5f8</color>
+    <color name="button_magenta">#ea2064</color>
+    <color name="button_yellow">#ff9807</color>
+</resources>

@@ -1,0 +1,81 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        //for file chooser
+        maven { url "https://jitpack.io" }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+// Define versions in a single place
+ext {
+    versionCode = 1
+    versionName = '0.0.1'
+
+    // Sdk and tools
+    minSdkVersion = 16
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = '27.1.1'
+
+    // App dependencies
+    SUPPORT_LIBRARY_VERSION = '27.1.1'
+    MULTIDEX_LIBRARY_VERSION = '1.0.3'
+
+    CALLIGRAPHY_VERSION = '2.3.0'
+    ARCH_LYFECYCLE_VERSION = "1.1.0"
+    room = "1.0.0"
+
+    PLAY_SERVICES_VERSION = '11.6.0'
+    GSON_SERVICES_VERSION = '2.8.2'
+
+    GLIDE_VERSION = '3.7.0'
+    GLIDE_COMPILER_VERSION = '4.2.0'
+
+    //--- these all are for inappstoragereader --//
+    INAPP_STORAGE_READER_VERSION = '1.0.2'
+    rvv = '23.1.0' //RecyclerView  version
+    slv = '23.1.0' // Support AppCompat v7 library version.
+    clv = '23.1.0' //CardView Library Version
+    csv = 23 // compile Sdk version
+    tsv = 23 //Target Sdk version
+    btv = '23.0.2' // Build tools version.
+    //--- ----------------------------------- --//
+
+    LEAKCANARY_VERSION = '1.5.4'
+    ESPRESSO_VERSION = '2.2.1'
+    RUNNER_VERSION = '1.0.1'
+    MOCKITO_VERSION = '2.11.0'
+
+    BUTTERKNIFE_VERSION = '8.4.0'
+
+    ZELORY_COMPRESSSOR_VERSION = '2.1.0'
+
+    CODEKIDXSTORAGECHOOSER_VERSION = '2.0.3'
+
+    LOTTIE_VERSION = '2.5.1'
+
+    //network library versions
+    RETROFIT_VERSION = '2.3.0'
+}

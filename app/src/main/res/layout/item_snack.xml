@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+            android:id="@+id/item_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_ripple">
+
+            <com.lid.lib.LabelImageView
+                android:id="@+id/img_snack"
+                android:layout_width="140dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_app"
+                android:padding="5dp"
+                app:label_backgroundColor="@color/colorPrimary"
+                app:label_orientation="LEFT_TOP"
+                app:label_text="1234"
+                app:label_textSize="14sp"
+                app:label_distance="30dp"
+                app:label_height="25dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_toRightOf="@+id/img_snack"
+                android:background="@color/colorPrimary"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/txt_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/txt_order_count"
+                    android:text="Snack title"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/txt_order_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="4dp"
+                    android:text="Ordered 0 times"
+                    android:textColor="@color/colorBg"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/txt_order_now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="4dp"
+                    android:text="Order Now"
+                    android:textColor="@color/colorBg"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/txt_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_above="@+id/rating_bar"
+                    android:layout_marginRight="2dp"
+                    android:text="*0.0"
+                    android:textColor="@color/colorBg"
+                    android:textSize="12sp"/>
+
+                <RatingBar
+                    android:id="@+id/rating_bar"
+                    android:theme="@style/RatingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="2dp"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    android:isIndicator="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/item_selected"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:visibility="visible">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:foreground="@color/colorBlackOverlay"/>
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerInParent="true"
+                    android:padding="2dp"
+                    android:background="@drawable/circle_white"/>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</layout>
