@@ -2,6 +2,7 @@ package com.w3engineers.core.snacksready.ui.snacks;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,24 +11,34 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.w3engineers.core.snacksready.R;
+import com.w3engineers.core.snacksready.data.local.appconst.AppConst;
 import com.w3engineers.core.snacksready.data.local.snack.Snack;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
 import com.w3engineers.core.snacksready.databinding.FragmentSnacksBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseFragment;
 import com.w3engineers.core.snacksready.ui.base.ItemClickListener;
+import com.w3engineers.core.util.helper.DialogUtil;
 import com.w3engineers.core.util.helper.ItemDecorationUtil;
+import com.w3engineers.core.util.helper.TimeUtil;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.helper.ViewUtils;
+import com.w3engineers.core.util.lib.network.NetworkService;
 
 import java.util.List;
 
 
 public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter> implements SnacksMvpView,
-        ItemClickListener<Snack>, Animation.AnimationListener{
+        ItemClickListener<Snack>, Animation.AnimationListener, NetworkService.SnacksCallBack, DialogUtil.DialogButtonListener{
     private String title;
 
     private FragmentSnacksBinding fragmentSnacksBinding;
 
-    Animation show,hide;
+    private Animation show,hide;
+
+    private AlertDialog loadingDialog, orderDialog;
+
+    private Snack selectedSnack;
 
     public SnacksFragment() {
         // Required empty public constructor
@@ -63,19 +74,25 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
     public void onResume() {
         super.onResume();
         if(getSnacksAdapter()!=null) getSnacksAdapter().clear();
+
+        NetworkService.setSnacksCallBack(this);
+        loadingDialog = DialogUtil.loadingDialogBuilder(getContext(), "Loading...");
         presenter.loadSnacks();
     }
 
     @Override
     protected void stopUI() {
-
+        NetworkService.removeSnacksCallBack();
     }
 
     @Override
     public void onClick(View view) {
         super.onClick(view);
         if(view == fragmentSnacksBinding.fabConfirm){
-            Toaster.show("Confirm?");
+            if(selectedSnack != null)
+                DialogUtil.showConfirmationDialog(getContext(),
+                        "Snacks confirmation", "Confirm " + selectedSnack.getTitle(),
+                        "Confirm now", "Choose again", this, DialogUtil.FLAG_CONFIRM);
         }
     }
 
@@ -101,6 +118,82 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
             }
         });
     }
+
+    @Override
+    public void onSnacksNotFound(String message) {
+        getActivity().runOnUiThread(()->{
+            Toaster.show(message);
+        });
+    }
+
+    @Override
+    public void onSnackConfirmed(String message, boolean success) {
+        getActivity().runOnUiThread(()->{
+            DialogUtil.messageDialogBuilder(getContext(), 0, message);
+        });
+    }
+
+    @Override
+    public void onItemClick(View view, Snack item) {
+        getActivity().runOnUiThread(()->{
+            if(getSnacksAdapter() != null) {
+                fragmentSnacksBinding.fabConfirm.clearAnimation();
+                if(getSnacksAdapter().isAnySelection()) {
+                    selectedSnack = item;
+                    if(fragmentSnacksBinding.fabConfirm.getVisibility() == View.INVISIBLE) {
+                        fragmentSnacksBinding.fabConfirm.setVisibility(View.VISIBLE);
+                        fragmentSnacksBinding.fabConfirm.startAnimation(show);
+                    }
+                }
+                else {
+                    selectedSnack = null;
+                    if(fragmentSnacksBinding.fabConfirm.getVisibility() == View.VISIBLE)
+                        fragmentSnacksBinding.fabConfirm.startAnimation(hide);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        fragmentSnacksBinding.fabConfirm.clearAnimation();
+        if(animation == hide)
+            fragmentSnacksBinding.fabConfirm.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
+
+    @Override
+    public void onResponse(RemoteSnacks remoteSnacks) {
+        if(loadingDialog != null) loadingDialog.dismiss();
+
+        presenter.handleResponse(remoteSnacks);
+    }
+
+    @Override
+    public void onPlaceOrder(RemoteResponse remoteResponse) {
+        getActivity().runOnUiThread(()->{
+            if(orderDialog != null) orderDialog.dismiss();
+
+            presenter.handleOrderPlacementResponse(remoteResponse);
+        });
+    }
+
+    @Override
+    public void onFailure(String message) {
+        if(loadingDialog != null) loadingDialog.dismiss();
+        Toaster.show(message);
+    }
+
+
 
     private void initView() {
         SnacksAdapter snacksAdapter = new SnacksAdapter();
@@ -130,35 +223,20 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
     }
 
     @Override
-    public void onItemClick(View view, Snack item) {
-        getActivity().runOnUiThread(()->{
-            if(getSnacksAdapter() != null) {
-                fragmentSnacksBinding.fabConfirm.clearAnimation();
-                if(getSnacksAdapter().isAnySelection()) {
-                    fragmentSnacksBinding.fabConfirm.setVisibility(View.VISIBLE);
-                    fragmentSnacksBinding.fabConfirm.startAnimation(show);
-                }
-                else {
-                    fragmentSnacksBinding.fabConfirm.startAnimation(hide);
-                }
-            }
-        });
+    public void onClickPositive(int flag) {
+        if(flag == DialogUtil.FLAG_CONFIRM) {
+            orderDialog = DialogUtil.loadingDialogBuilder(getContext(), "Confirming order ...");
+            presenter.confirmSnack(selectedSnack);
+        }
     }
 
     @Override
-    public void onAnimationStart(Animation animation) {
+    public void onCancel(int flag) {
 
     }
 
     @Override
-    public void onAnimationEnd(Animation animation) {
-        fragmentSnacksBinding.fabConfirm.clearAnimation();
-        if(animation == hide)
-            fragmentSnacksBinding.fabConfirm.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void onAnimationRepeat(Animation animation) {
+    public void onClickNegative(int flag) {
 
     }
 }

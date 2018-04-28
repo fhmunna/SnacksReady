@@ -10,20 +10,58 @@ package com.w3engineers.core.snacksready.ui.snacks;
  *  ****************************************************************************
  */
 
+import com.w3engineers.core.snacksready.data.local.appconst.AppConst;
+import com.w3engineers.core.snacksready.data.local.prefstorage.PreferencesHelper;
+import com.w3engineers.core.snacksready.data.local.sharedpreference.SharedPrefLoginInfo;
 import com.w3engineers.core.snacksready.data.local.snack.Snack;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
+import com.w3engineers.core.util.helper.NetworkUtil;
+import com.w3engineers.core.util.helper.TimeUtil;
+import com.w3engineers.core.util.helper.Toaster;
+import com.w3engineers.core.util.lib.network.NetworkService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SnacksPresenter extends BasePresenter<SnacksMvpView> {
+    SharedPrefLoginInfo sharedPrefLoginInfo;
+
+    SnacksPresenter(){
+        sharedPrefLoginInfo = PreferencesHelper.provideLoginInfoSharePrefService();
+    }
+
     public void loadSnacks(){
-        List<Snack> snacks = new ArrayList<>();
-        for (int i = 1; i<10; i++){
-            Snack s = new Snack("s "+i, 10+i, 5+i, 23, "");
-            s.setId(i);
-            snacks.add(s);
+        long oneDay = 24*60*60*1000;
+        long milSec = System.currentTimeMillis() - oneDay;
+        NetworkService.getSnacks(TimeUtil.getDateFormat12(milSec));
+    }
+
+    public void handleResponse(RemoteSnacks remoteSnacks){
+        if(remoteSnacks.getSuccess() == AppConst.SUCCESS){
+            getMvpView().onSnacksLoaded(remoteSnacks.getSnacks());
         }
-        if(getMvpView() != null) getMvpView().onSnacksLoaded(snacks);
+        else {
+            getMvpView().onSnacksNotFound(remoteSnacks.getMessage());
+        }
+    }
+
+    public void confirmSnack(Snack snack){
+        long oneDay = 24*60*60*1000;
+        long milSec = System.currentTimeMillis() - oneDay;
+        NetworkService.placeOrder(TimeUtil.getDateFormat12(milSec),
+                sharedPrefLoginInfo.getOfficeId(), snack.getId(), NetworkUtil.getLocalIpAddress());
+    }
+
+    public void handleOrderPlacementResponse(RemoteResponse remoteResponse){
+        String msg = remoteResponse.getMessage();
+        boolean success = remoteResponse.getSuccess() == AppConst.SUCCESS;
+
+        if(remoteResponse.getSuccess() == AppConst.SUCCESS)
+            msg = "Order placed successfully from IP " + NetworkUtil.getLocalIpAddress();
+
+        getMvpView().onSnackConfirmed(msg, success);
+
     }
 }

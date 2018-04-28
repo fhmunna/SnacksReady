@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteDirConst;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
 
@@ -26,9 +27,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkService {
     private static Retrofit retrofit;
     private static NetworkClientApi networkClientApi;
-    private ValidityCheckerCallBack mValidityListener;
+    private static ValidityCheckerCallBack mValidityListener;
+    private static SnacksCallBack mSnacksListener;
 
-    public void start() {
+    public static void start() {
         if(retrofit==null){
             retrofit = new Retrofit.Builder()
                     .baseUrl(RemoteDirConst.BASE_URL)
@@ -38,21 +40,34 @@ public class NetworkService {
         if(networkClientApi ==null) networkClientApi = retrofit.create(NetworkClientApi.class);
     }
 
-    public void setValidityCheckerCallBack(ValidityCheckerCallBack validityCheckerCallBack){
+    public static void setValidityCheckerCallBack(ValidityCheckerCallBack validityCheckerCallBack){
         mValidityListener = validityCheckerCallBack;
     }
 
-    public void checkUserValidity(String officeId){
+    public static void removeValidityCheckerCallBack(){
+        mValidityListener = null;
+    }
+
+    public static void setSnacksCallBack(SnacksCallBack snacksCallBack){
+        mSnacksListener = snacksCallBack;
+    }
+
+    public static void removeSnacksCallBack(){
+        mSnacksListener = null;
+    }
+
+    public static void checkUserValidity(String officeId){
         Call<RemoteUser> call = networkClientApi.checkUserValidity(officeId);
         call.enqueue(new Callback<RemoteUser>() {
             @Override
             public void onResponse(@NonNull Call<RemoteUser> call, @NonNull Response<RemoteUser> response) {
                 if (response.isSuccessful()) {
                     RemoteUser remoteUser = response.body();
+                    Log.d(NetworkService.class.getSimpleName(), remoteUser.getMessage());
                     if(mValidityListener != null) mValidityListener.onResponse(remoteUser);
                 } else {
                     Log.d(NetworkService.class.getSimpleName(), response.errorBody().toString());
-                    if(mValidityListener != null) mValidityListener.onFailure(response.errorBody().toString());
+                    if(mValidityListener != null) mValidityListener.onFailure("Failed to get data. May be Api problem.");
                 }
             }
 
@@ -64,28 +79,60 @@ public class NetworkService {
         });
     }
 
-    public void getSnacks(){
-        Call<RemoteSnacks> call = networkClientApi.loadSnacks();
+    public static void getSnacks(String date){
+        Call<RemoteSnacks> call = networkClientApi.loadSnacks(date);
         call.enqueue(new Callback<RemoteSnacks>() {
             @Override
             public void onResponse(@NonNull Call<RemoteSnacks> call, @NonNull Response<RemoteSnacks> response) {
                 if (response.isSuccessful()) {
                     RemoteSnacks remoteSnacks = response.body();
-                    Log.d(NetworkService.class.getSimpleName(), remoteSnacks.getSnacks().get(0).getTitle());
+                    Log.d(NetworkService.class.getSimpleName(), remoteSnacks.getMessage());
+                    if(mSnacksListener != null) mSnacksListener.onResponse(remoteSnacks);
                 } else {
                     Log.d(NetworkService.class.getSimpleName(), response.errorBody().toString());
+                    if(mSnacksListener != null) mSnacksListener.onFailure("Failed to get data. May be Api problem.");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<RemoteSnacks> call, @NonNull Throwable t) {
                 Log.d(NetworkService.class.getSimpleName(), "Failed::" + t.toString());
+                if(mSnacksListener != null) mSnacksListener.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public static void placeOrder(String date, String officeId, int snacksId, String ordered_by){
+        Call<RemoteResponse> call = networkClientApi.placeOrder(date, officeId, snacksId, ordered_by);
+        call.enqueue(new Callback<RemoteResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RemoteResponse> call, @NonNull Response<RemoteResponse> response) {
+                if (response.isSuccessful()) {
+                    RemoteResponse remoteResponse = response.body();
+                    Log.d(NetworkService.class.getSimpleName(), remoteResponse.getMessage());
+                    if(mSnacksListener != null) mSnacksListener.onPlaceOrder(remoteResponse);
+                } else {
+                    Log.d(NetworkService.class.getSimpleName(), response.errorBody().toString());
+                    if(mSnacksListener != null) mSnacksListener.onFailure("Failed to get data. May be Api problem.");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RemoteResponse> call, @NonNull Throwable t) {
+                Log.d(NetworkService.class.getSimpleName(), "Failed::" + t.toString());
+                if(mSnacksListener != null) mSnacksListener.onFailure(t.getMessage());
             }
         });
     }
 
     public interface ValidityCheckerCallBack{
         void onResponse(RemoteUser remoteUser);
+        void onFailure(String message);
+    }
+
+    public interface SnacksCallBack{
+        void onResponse(RemoteSnacks remoteSnacks);
+        void onPlaceOrder(RemoteResponse remoteResponse);
         void onFailure(String message);
     }
 }

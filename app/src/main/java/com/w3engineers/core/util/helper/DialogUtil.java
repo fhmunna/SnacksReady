@@ -27,6 +27,7 @@ public class DialogUtil {
     public static final int FLAG_DOWNLOAD = 4;
     public static final int FLAG_ADD_TO_FAVOURITE = 5;
     public static final int FLAG_LOG_OUT = 6;
+    public static final int FLAG_CONFIRM = 7;
 
     private static String COLOR_CODE = "#000000";
 

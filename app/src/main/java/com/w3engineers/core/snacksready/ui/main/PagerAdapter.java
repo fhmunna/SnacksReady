@@ -21,7 +21,7 @@ import com.w3engineers.core.snacksready.ui.snacks.SnacksFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter {
     private static int NUM_ITEMS = 2;
-    private String[] titles = {"Today's RemoteSnacks", "Profile"};
+    private String[] titles = {"Today's Snacks", "Profile"};
 
     public PagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);

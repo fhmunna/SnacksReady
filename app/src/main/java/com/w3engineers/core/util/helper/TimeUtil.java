@@ -52,6 +52,7 @@ public class TimeUtil {
     private static String dateFormat9 = "hh:mm aa";
     private static String dateFormat10 = "hh:mm";
     private static String dateFormat11 = "MMMM dd, hh:mm aa";
+    private static String dateFormat12 = "yyyy-MM-dd";
 
     /*
     * Private constructor. Don't make it public
@@ -102,6 +103,13 @@ public class TimeUtil {
 
         Date date = new Date(milliSeconds);
         DateFormat format = new SimpleDateFormat(dateFormat4, Locale.getDefault());
+        format.setTimeZone(TimeZone.getDefault());
+        return format.format(date);
+    }
+
+    public static String getDateFormat12(long milliSeconds) {
+        Date date = new Date(milliSeconds);
+        DateFormat format = new SimpleDateFormat(dateFormat12, Locale.getDefault());
         format.setTimeZone(TimeZone.getDefault());
         return format.format(date);
     }

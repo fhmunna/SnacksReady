@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 
 import com.w3engineers.core.snacksready.R;
 import com.w3engineers.core.snacksready.data.local.snack.Snack;
+import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteDirConst;
 import com.w3engineers.core.snacksready.databinding.ItemSnackBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseAdapter;
 import com.w3engineers.core.snacksready.ui.base.BaseViewHolder;
+import com.w3engineers.core.util.helper.Glider;
 
 public class SnacksAdapter extends BaseAdapter<Snack> {
     private int selectedIndex = -1;
@@ -65,6 +67,8 @@ public class SnacksAdapter extends BaseAdapter<Snack> {
                 mItemSnackBinding.animationView.playAnimation();
             }
             else mItemSnackBinding.itemSelected.setVisibility(View.INVISIBLE);
+
+            Glider.show(RemoteDirConst.BASE_IMAGE_PATH + item.getImage(), mItemSnackBinding.imgSnack);
         }
 
         @Override

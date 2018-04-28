@@ -12,7 +12,10 @@ package com.w3engineers.core.snacksready.ui.main;
 
 import com.w3engineers.core.snacksready.data.local.prefstorage.PreferencesHelper;
 import com.w3engineers.core.snacksready.data.local.sharedpreference.SharedPrefLoginInfo;
+import com.w3engineers.core.snacksready.data.local.snack.Snack;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
+
+import java.util.List;
 
 public class MainPresenter extends BasePresenter<MainMvpView> {
     private SharedPrefLoginInfo loginInfo;

@@ -53,8 +53,10 @@ public class Glider {
             if (location != null && !location.isEmpty() && imageView != null && thisContext != null) {
                 Glide.with(thisContext)
                         .load(location)
+                        .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .skipMemoryCache(true)
+                        .placeholder(R.drawable.ic_app)
                         .into(imageView);
             }
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import com.w3engineers.core.util.helper.Glider;
 import com.w3engineers.core.util.helper.Notify;
 import com.w3engineers.core.util.helper.SharedPref;
 import com.w3engineers.core.util.helper.Toaster;
+import com.w3engineers.core.util.lib.network.NetworkService;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -61,6 +62,7 @@ public class AppController extends MultiDexApplication {
     }
 
     private void releaseLoader(Context context) {
+        NetworkService.start();
         Glider.init(context);
         Toaster.init(context);
         SharedPref.init(context);
