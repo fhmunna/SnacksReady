@@ -27,17 +27,28 @@ import android.widget.ImageView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.w3engineers.core.snacksready.R;
+import com.w3engineers.core.snacksready.data.local.appconst.AppConst;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
 import com.w3engineers.core.snacksready.databinding.ActivitySplashBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseActivity;
 import com.w3engineers.core.snacksready.ui.main.MainActivity;
 import com.w3engineers.core.util.helper.DialogUtil;
 import com.w3engineers.core.util.helper.Toaster;
+import com.w3engineers.core.util.lib.network.NetworkService;
 
-public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter> implements SplashMvpView{
+public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter> implements SplashMvpView,
+        NetworkService.ValidityCheckerCallBack{
 
     private static final int SPLASH_TIME = 2300;
 
     private ActivitySplashBinding activitySplashBinding;
+
+    private final int NEW_USER = 1;
+    private final int OLD_USER = 2;
+    private NetworkService networkService;
+    private AlertDialog dialog;
+    private int FLAG_USER_TYPE = NEW_USER;
+    private boolean isRemembered;
 
     /**
      * Start Activity (Pass value as a 2nd Parameter)
@@ -65,6 +76,10 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
         activitySplashBinding.imgAppName.setAnimation(topDown);
         activitySplashBinding.tvAppName.setAnimation(downTop);
 
+        networkService = new NetworkService();
+        networkService.start();
+        networkService.setValidityCheckerCallBack(this);
+
         runOnUiThread(()->{
             new Handler().postDelayed(()-> {
                 presenter.whereToGo();
@@ -91,6 +106,7 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
     @Override
     public void onValidSignIn() {
         runOnUiThread(()->{
+            Toaster.show("Great!!");
             MainActivity.runActivity(SplashActivity.this);
             overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
             finish();
@@ -106,11 +122,20 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
     }
 
     @Override
+    public void onRemembered(String officeID) {
+        runOnUiThread(()->{
+            checkValidity(officeID);
+        });
+    }
+
+    @Override
     public void onForgot() {
         runOnUiThread(this::login);
     }
 
     private void login() {
+        FLAG_USER_TYPE = OLD_USER;
+
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View view = layoutInflater.inflate(R.layout.prompt_office_id, null);
         EditText etOfficeId = view.findViewById(R.id.et_office_id);
@@ -128,16 +153,21 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
 
         btnConfirm.setOnClickListener(view13 -> {
             String officeId = etOfficeId.getText().toString();
+            isRemembered = cbRememberMe.isChecked();
+
             if(officeId == null || TextUtils.isEmpty(officeId))
                 Toaster.show("Please insert your office id");
             else {
-                presenter.checkSignInValidity(officeId, cbRememberMe.isChecked());
+                alertDialog.dismiss();
+                checkValidity(officeId);
             }
         });
     }
 
-    int selectedAvatar;
+    int selectedAvatar = -1;
     private void takeInput(){
+        FLAG_USER_TYPE = NEW_USER;
+
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View view = layoutInflater.inflate(R.layout.prompt_user_info, null);
         CircularImageView imgIcMale1 = view.findViewById(R.id.img_ic_male_1);
@@ -186,10 +216,33 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
                 if(officeId == null || TextUtils.isEmpty(officeId))
                     Toaster.show("Please insert your office id");
                 else {
-                    Toaster.show("Great!!");
-                    presenter.saveUserInfo(selectedAvatar, officeId);
+                    alertDialog.dismiss();
+                    checkValidity(officeId);
                 }
             }
         });
+    }
+
+    private void checkValidity(String officeId){
+        dialog = DialogUtil.loadingDialogBuilder(this, "Checking . . .");
+        networkService.checkUserValidity(officeId);
+    }
+
+    @Override
+    public void onResponse(RemoteUser remoteUser) {
+        dialog.dismiss();
+        if(remoteUser == null || remoteUser.getSuccess() == AppConst.FAILED)
+            Toaster.show("Invalid Office Id!!");
+        else {
+            if(FLAG_USER_TYPE == NEW_USER) presenter.processNewUser(remoteUser.getUser(), selectedAvatar);
+            else if(FLAG_USER_TYPE == OLD_USER) presenter.processOldUser(isRemembered);
+        }
+    }
+
+    @Override
+    public void onFailure(String message) {
+        dialog.dismiss();
+        Toaster.show("Error!! " + message);
+        finish();
     }
 }

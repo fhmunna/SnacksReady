@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface SnacksApi {
+public interface NetworkClientApi {
     @GET("api/user_validity.php")
     Call<RemoteUser> checkUserValidity(@Query("office_id") String officeId);
 

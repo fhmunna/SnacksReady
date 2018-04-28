@@ -2,16 +2,10 @@ package com.w3engineers.core.snacksready.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.w3engineers.core.snacksready.R;
 import com.w3engineers.core.snacksready.databinding.ActivityMainBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseActivity;
-import com.w3engineers.core.util.lib.network.SnacksController;
 
 public class MainActivity extends BaseActivity<MainMvpView, MainPresenter> implements MainMvpView {
     private ActivityMainBinding activityMainBinding;

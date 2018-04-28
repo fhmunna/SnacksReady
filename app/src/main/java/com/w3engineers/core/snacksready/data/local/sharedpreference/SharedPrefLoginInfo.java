@@ -39,7 +39,7 @@ public class SharedPrefLoginInfo {
     }
 
     public int getAvatar(){
-        return preferences.getInt(SharedPrefProp.SP_AVATAR, 0);
+        return preferences.getInt(SharedPrefProp.SP_AVATAR, -1);
     }
 
     public boolean isRemembered(){

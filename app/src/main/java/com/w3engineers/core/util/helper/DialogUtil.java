@@ -16,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.w3engineers.core.snacksready.R;
 
@@ -88,17 +89,19 @@ public class DialogUtil {
         return alertDialog;
     }
 
-    public static AlertDialog loadingDialogBuilder(Context context) {
+    public static AlertDialog loadingDialogBuilder(Context context, String title) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.layout_loading_star, null);
         if (view != null) {
             builder.setView(view);
+            TextView  tvTitle = view.findViewById(R.id.txt_title);
+            tvTitle.setText(title);
         }
 
         AlertDialog alertDialog = builder.create();
-        alertDialog.setCancelable(true);
-        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
 
         return alertDialog;

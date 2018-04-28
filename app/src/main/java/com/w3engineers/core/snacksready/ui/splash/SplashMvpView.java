@@ -17,5 +17,6 @@ public interface SplashMvpView extends MvpView {
     void onNewSignIn();
     void onValidSignIn();
     void onInvalidSignIn();
+    void onRemembered(String officeID);
     void onForgot();
 }

@@ -14,6 +14,7 @@ import android.text.TextUtils;
 
 import com.w3engineers.core.snacksready.data.local.prefstorage.PreferencesHelper;
 import com.w3engineers.core.snacksready.data.local.sharedpreference.SharedPrefLoginInfo;
+import com.w3engineers.core.snacksready.data.local.user.User;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
 
 public class SplashPresenter extends BasePresenter<SplashMvpView> {
@@ -25,7 +26,7 @@ public class SplashPresenter extends BasePresenter<SplashMvpView> {
 
     public void whereToGo(){
         if(sharedPrefLoginInfo.isRemembered()) {
-            checkSignInValidity(sharedPrefLoginInfo.getOfficeId(), true);
+            getMvpView().onRemembered(sharedPrefLoginInfo.getOfficeId());
         }
         else {
             if(sharedPrefLoginInfo.getOfficeId().isEmpty()) getMvpView().onNewSignIn();
@@ -33,17 +34,16 @@ public class SplashPresenter extends BasePresenter<SplashMvpView> {
         }
     }
 
-    void checkSignInValidity(String officeId, boolean isRemembered){
-        if(TextUtils.isEmpty(officeId) || !sharedPrefLoginInfo.getOfficeId().equals(officeId))
-            getMvpView().onInvalidSignIn();
-        else {
-            sharedPrefLoginInfo.updateRemembered(isRemembered);
-            getMvpView().onValidSignIn();
-        }
+    void processNewUser(User user, int avatar){
+        if(avatar==-1) avatar = sharedPrefLoginInfo.getAvatar();
+        sharedPrefLoginInfo.storeLoginInfo(user.getOfficeId(), avatar, true);
+
+        getMvpView().onValidSignIn();
     }
 
-    public void saveUserInfo(int avatar, String officeId){
-        sharedPrefLoginInfo.storeLoginInfo(officeId, avatar, true);
+    void processOldUser(boolean isRemembered){
+        sharedPrefLoginInfo.updateRemembered(isRemembered);
+
         getMvpView().onValidSignIn();
     }
 }

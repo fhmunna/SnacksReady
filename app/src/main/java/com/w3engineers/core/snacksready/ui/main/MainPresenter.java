@@ -13,16 +13,11 @@ package com.w3engineers.core.snacksready.ui.main;
 import com.w3engineers.core.snacksready.data.local.prefstorage.PreferencesHelper;
 import com.w3engineers.core.snacksready.data.local.sharedpreference.SharedPrefLoginInfo;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
-import com.w3engineers.core.util.lib.network.SnacksController;
 
 public class MainPresenter extends BasePresenter<MainMvpView> {
     private SharedPrefLoginInfo loginInfo;
-    private SnacksController snacksController;
 
     MainPresenter(){
         loginInfo = PreferencesHelper.provideLoginInfoSharePrefService();
-        snacksController = new SnacksController();
-        snacksController.start();
-        snacksController.checkUserValidity(loginInfo.getOfficeId());
     }
 }
