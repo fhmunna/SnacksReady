@@ -1,16 +1,17 @@
 package com.w3engineers.core.snacksready.data.remote.remotemodel;
 
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
 import com.w3engineers.core.snacksready.data.local.snack.Snack;
 
-public class RemoteSnacks {
+public class RemoteOrder {
     @SerializedName("success")
     private Integer success;
     @SerializedName("message")
     private String message;
-    @SerializedName("snacks")
-    private List<Snack> snacks = null;
+    @SerializedName("snack")
+    private Snack snack;
+    @SerializedName("ordered_by")
+    private String orderedBy;
 
     public Integer getSuccess() {
         return success;
@@ -28,12 +29,19 @@ public class RemoteSnacks {
         this.message = message;
     }
 
-    public List<Snack> getSnacks() {
-        return snacks;
+    public Snack getSnack() {
+        return snack;
     }
 
-    public void setSnacks(List<Snack> snacks) {
-        this.snacks = snacks;
+    public void setSnack(Snack snack) {
+        this.snack = snack;
     }
 
+    public String getOrderedBy() {
+        return orderedBy;
+    }
+
+    public void setOrderedBy(String orderedBy) {
+        this.orderedBy = orderedBy;
+    }
 }

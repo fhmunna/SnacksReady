@@ -10,6 +10,7 @@ package com.w3engineers.core.util.lib.network;
  *  ****************************************************************************
  */
 
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteOrder;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
@@ -23,7 +24,10 @@ public interface NetworkClientApi {
     Call<RemoteUser> checkUserValidity(@Query("office_id") String officeId);
 
     @GET("api/snacks.php")
-    Call<RemoteSnacks> loadSnacks(@Query("date") String date);
+    Call<RemoteSnacks> loadSnacks();
+
+    @GET("api/order.php")
+    Call<RemoteOrder> loadOrder(@Query("office_id") String officeId);
 
     @GET("api/save_order.php")
     Call<RemoteResponse> placeOrder(@Query("date") String date,

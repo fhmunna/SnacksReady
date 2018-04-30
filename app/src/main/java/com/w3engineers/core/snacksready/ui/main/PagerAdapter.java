@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.w3engineers.core.snacksready.ui.profile.ProfileFragment;
 import com.w3engineers.core.snacksready.ui.snacks.SnacksFragment;
+import com.w3engineers.core.snacksready.ui.lunch.LunchFragment;
 
 
 /*
@@ -20,8 +21,8 @@ import com.w3engineers.core.snacksready.ui.snacks.SnacksFragment;
 */
 
 public class PagerAdapter extends FragmentPagerAdapter {
-    private static int NUM_ITEMS = 2;
-    private String[] titles = {"Today's Snacks", "Profile"};
+    private static int NUM_ITEMS = 3;
+    private String[] titles = {"Snacks", "Lunch", "Profile"};
 
     public PagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -40,7 +41,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return SnacksFragment.newInstance(titles[0]);
 
             case 1:
-                return ProfileFragment.newInstance(titles[1]);
+                return LunchFragment.newInstance(titles[1]);
+
+            case 2:
+                return ProfileFragment.newInstance(titles[2]);
 
             default:
             return null;

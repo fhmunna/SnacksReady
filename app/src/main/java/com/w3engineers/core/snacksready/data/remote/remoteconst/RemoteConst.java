@@ -10,9 +10,13 @@ package com.w3engineers.core.snacksready.data.remote.remoteconst;
  *  ****************************************************************************
  */
 
-public interface RemoteDirConst {
+public interface RemoteConst {
     String BASE_URL = "https://snacksready.000webhostapp.com/snacks_ready/";
 
     String API = BASE_URL + "api/";
     String BASE_IMAGE_PATH = BASE_URL + "img/";
+
+    String DB_NAME = "id5547164_db_snacks";
+    String USERNAME = "id5547164_hasnain";
+    String PASSWORD = "hasnain";
 }

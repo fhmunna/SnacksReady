@@ -10,8 +10,10 @@ package com.w3engineers.core.snacksready.ui.profile;
  *  ****************************************************************************
  */
 
+import com.w3engineers.core.snacksready.data.local.user.User;
 import com.w3engineers.core.snacksready.ui.base.MvpView;
 
 public interface ProfileMvpView extends MvpView {
+    void onLoadData(int avatar, User user, String ip);
     void onSignOut();
 }

@@ -17,20 +17,22 @@ import com.w3engineers.core.snacksready.data.local.prefstorage.SharedPrefProp;
 */
 public class SharedPrefLoginInfo {
     private Context context;
-    private SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+    private static SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public SharedPrefLoginInfo(Context context) {
         this.context = context;
 
-        preferences = context.getSharedPreferences(SharedPrefProp.SP_LOGIN, Context.MODE_PRIVATE);
+        if(preferences == null)
+            preferences = context.getSharedPreferences(SharedPrefProp.SP_LOGIN, Context.MODE_PRIVATE);
     }
 
-    public void storeLoginInfo(String officeId, int avatar, boolean isRemembered) {
+    public void storeLoginInfo(String officeId, int avatar, boolean isRemembered, boolean isOrderedToday) {
         editor = preferences.edit();
         editor.putString(SharedPrefProp.SP_OFFICE_ID, officeId);
         editor.putInt(SharedPrefProp.SP_AVATAR, avatar);
         editor.putBoolean(SharedPrefProp.SP_REMEMBERED, isRemembered);
+        editor.putBoolean(SharedPrefProp.SP_ORDERED_TODAY, isOrderedToday);
         editor.apply();
     }
 
@@ -44,6 +46,10 @@ public class SharedPrefLoginInfo {
 
     public boolean isRemembered(){
         return preferences.getBoolean(SharedPrefProp.SP_REMEMBERED, false);
+    }
+
+    public boolean isOrderedToday(){
+        return preferences.getBoolean(SharedPrefProp.SP_ORDERED_TODAY, false);
     }
 
     public void updateOfficeId(String newOfficeId){
@@ -61,6 +67,12 @@ public class SharedPrefLoginInfo {
     public void updateRemembered(boolean remember){
         editor = preferences.edit();
         editor.putBoolean(SharedPrefProp.SP_REMEMBERED, remember);
+        editor.apply();
+    }
+
+    public void updateOrderedToday(boolean orderedToday){
+        editor = preferences.edit();
+        editor.putBoolean(SharedPrefProp.SP_ORDERED_TODAY, orderedToday);
         editor.apply();
     }
 

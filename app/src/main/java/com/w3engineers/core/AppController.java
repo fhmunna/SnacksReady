@@ -9,7 +9,6 @@ import com.w3engineers.core.snacksready.R;
 import com.w3engineers.core.snacksready.data.local.dbstorage.DatabaseService;
 import com.w3engineers.core.util.helper.Glider;
 import com.w3engineers.core.util.helper.Notify;
-import com.w3engineers.core.util.helper.SharedPref;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.lib.network.NetworkService;
 
@@ -65,7 +64,6 @@ public class AppController extends MultiDexApplication {
         NetworkService.start();
         Glider.init(context);
         Toaster.init(context);
-        SharedPref.init(context);
         Notify.init(context);
         DatabaseService.init(context);
 

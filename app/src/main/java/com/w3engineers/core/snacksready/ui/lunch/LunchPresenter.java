@@ -1,4 +1,4 @@
-package com.w3engineers.core.snacksready.ui.snacks;
+package com.w3engineers.core.snacksready.ui.lunch;
 /*
  *  ****************************************************************************
  *  * Created by : Md. Hasnain on 4/24/2018 at 1:48 PM.
@@ -22,10 +22,10 @@ import com.w3engineers.core.util.helper.NetworkUtil;
 import com.w3engineers.core.util.helper.TimeUtil;
 import com.w3engineers.core.util.lib.network.NetworkService;
 
-public class SnacksPresenter extends BasePresenter<SnacksMvpView> {
+public class LunchPresenter extends BasePresenter<LunchMvpView> {
     private SharedPrefLoginInfo sharedPrefLoginInfo;
 
-    SnacksPresenter(){
+    LunchPresenter(){
         sharedPrefLoginInfo = PreferencesHelper.provideLoginInfoSharePrefService();
     }
 

@@ -13,6 +13,7 @@ package com.w3engineers.core.snacksready.ui.splash;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -39,7 +40,7 @@ import com.w3engineers.core.util.lib.network.NetworkService;
 public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter> implements SplashMvpView,
         NetworkService.ValidityCheckerCallBack{
 
-    private static final int SPLASH_TIME = 2300;
+    private static final int SPLASH_TIME = 2000;
 
     private ActivitySplashBinding activitySplashBinding;
 
@@ -70,10 +71,15 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
     @Override
     protected void startUI() {
         activitySplashBinding = (ActivitySplashBinding) getViewDataBinding();
-        Animation topDown = AnimationUtils.loadAnimation(this, R.anim.updown);
-        Animation downTop = AnimationUtils.loadAnimation(this, R.anim.downtop);
-        activitySplashBinding.imgAppName.setAnimation(topDown);
-        activitySplashBinding.tvAppName.setAnimation(downTop);
+        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/patchy_robots.ttf");
+        activitySplashBinding.splashText.setTypeface(customFont);
+
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade);
+        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.uptodown);
+        Animation animation2 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.downtoup);
+        activitySplashBinding.progressBar.startAnimation(animation2);
+        activitySplashBinding.splashText.startAnimation(animation1);
+        activitySplashBinding.splashImage.startAnimation(animation);
 
         runOnUiThread(()->{
             new Handler().postDelayed(()-> {
@@ -125,6 +131,8 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
     @Override
     public void onRemembered(String officeID) {
         runOnUiThread(()->{
+            FLAG_USER_TYPE = OLD_USER;
+            isRemembered = true;
             loadingDialog = DialogUtil.loadingDialogBuilder(this, "Checking . . .");
             presenter.checkValidity(officeID);
         });
@@ -235,7 +243,7 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
             if(inputDialog != null) inputDialog.dismiss();
 
             if(FLAG_USER_TYPE == NEW_USER) presenter.processNewUser(remoteUser.getUser(), selectedAvatar);
-            else if(FLAG_USER_TYPE == OLD_USER) presenter.processOldUser(isRemembered);
+            else if(FLAG_USER_TYPE == OLD_USER) presenter.processOldUser(isRemembered, remoteUser.isOrderedToday());
         }
     }
 

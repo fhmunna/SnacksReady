@@ -1,4 +1,4 @@
-package com.w3engineers.core.snacksready.ui.snacks;
+package com.w3engineers.core.snacksready.ui.lunch;
 /*
  *  ****************************************************************************
  *  * Created by : Md. Hasnain on 4/24/2018 at 1:58 PM.
@@ -27,7 +27,7 @@ import com.w3engineers.core.util.helper.Glider;
 import com.w3engineers.core.util.helper.MyBounceInterPolator;
 import com.w3engineers.core.util.helper.NumberUtil;
 
-public class SnacksAdapter extends BaseAdapter<Snack> {
+public class LunchAdapter extends BaseAdapter<Snack> {
     private int selectedIndex = -1;
     private int prevSelectedIndex = -1;
     private boolean isAnySelection = false;

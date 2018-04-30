@@ -1,4 +1,4 @@
-package com.w3engineers.core.snacksready.ui.snacks;
+package com.w3engineers.core.snacksready.ui.lunch;
 /*
  *  ****************************************************************************
  *  * Created by : Md. Hasnain on 4/24/2018 at 1:47 PM.
@@ -15,7 +15,7 @@ import com.w3engineers.core.snacksready.ui.base.MvpView;
 
 import java.util.List;
 
-interface SnacksMvpView extends MvpView {
+interface LunchMvpView extends MvpView {
     void onSnacksLoaded(List<Snack> snacks);
     void onOrderLoaded(Snack snacks, String orderedBy);
     void onSnacksNotFound(String message);
