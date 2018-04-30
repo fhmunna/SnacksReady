@@ -101,8 +101,8 @@ public class DialogUtil {
         }
 
         AlertDialog alertDialog = builder.create();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
 
         return alertDialog;
