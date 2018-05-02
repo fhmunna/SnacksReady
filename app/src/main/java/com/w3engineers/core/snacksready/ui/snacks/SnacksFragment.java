@@ -13,12 +13,15 @@ import android.view.animation.AnimationUtils;
 import com.w3engineers.core.snacksready.R;
 import com.w3engineers.core.snacksready.data.local.appconst.AppConst;
 import com.w3engineers.core.snacksready.data.local.snack.Snack;
+import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteConst;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteOrder;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
 import com.w3engineers.core.snacksready.databinding.FragmentSnacksBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseFragment;
 import com.w3engineers.core.snacksready.ui.base.ItemClickListener;
 import com.w3engineers.core.util.helper.DialogUtil;
+import com.w3engineers.core.util.helper.Glider;
 import com.w3engineers.core.util.helper.ItemDecorationUtil;
 import com.w3engineers.core.util.helper.TimeUtil;
 import com.w3engineers.core.util.helper.Toaster;
@@ -66,8 +69,6 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
         initView();
 
         setClickListener(fragmentSnacksBinding.fabConfirm);
-
-        presenter.loadSnacks();
     }
 
     @Override
@@ -77,7 +78,7 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
 
         NetworkService.setSnacksCallBack(this);
         loadingDialog = DialogUtil.loadingDialogBuilder(getContext(), "Loading...");
-        presenter.loadSnacks();
+        presenter.whatToLoad();
     }
 
     @Override
@@ -104,12 +105,13 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
     @Override
     public void onSnacksLoaded(List<Snack> snacks) {
         getActivity().runOnUiThread(()->{
+            makeInvisibleAll();
             if(snacks == null || snacks.size() == 0) {
                 fragmentSnacksBinding.tvNoSnacks.setVisibility(View.VISIBLE);
                 fragmentSnacksBinding.tvNoSnacks.setText("No snacks yet. Keep patient.");
             }
             else {
-                fragmentSnacksBinding.tvNoSnacks.setVisibility(View.INVISIBLE);
+                fragmentSnacksBinding.rvSnacks.setVisibility(View.VISIBLE);
                 SnacksAdapter snacksAdapter = getSnacksAdapter();
 
                 if (snacksAdapter == null) return;
@@ -120,8 +122,27 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
     }
 
     @Override
+    public void onOrderLoaded(Snack snack, String orderedBy) {
+        getActivity().runOnUiThread(()->{
+            makeInvisibleAll();
+            Glider.show(RemoteConst.BASE_IMAGE_PATH + snack.getImage(), fragmentSnacksBinding.imgSnack);
+            fragmentSnacksBinding.txtTitle.setText(snack.getTitle());
+            fragmentSnacksBinding.txtReviewCount.setText(snack.getReviewCount() + " reviews");
+            float rating = 0;
+            if(snack.getReviewCount() > 0) rating = snack.getRatingSum()/snack.getReviewCount();
+            fragmentSnacksBinding.ratingBar.setRating(rating);
+            fragmentSnacksBinding.txtOrderCount.setText("Total " + snack.getOrderCount() + " orders");
+            fragmentSnacksBinding.txtOrderedBy.setText("Ordered from IP: " + orderedBy);
+            fragmentSnacksBinding.orderedItem.setVisibility(View.VISIBLE);
+        });
+    }
+
+    @Override
     public void onSnacksNotFound(String message) {
         getActivity().runOnUiThread(()->{
+            makeInvisibleAll();
+            fragmentSnacksBinding.tvNoSnacks.setVisibility(View.VISIBLE);
+            fragmentSnacksBinding.tvNoSnacks.setText(message);
             Toaster.show(message);
         });
     }
@@ -188,12 +209,21 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
     }
 
     @Override
-    public void onFailure(String message) {
-        if(loadingDialog != null) loadingDialog.dismiss();
-        Toaster.show(message);
+    public void onLoadOrder(RemoteOrder remoteOrder) {
+        getActivity().runOnUiThread(()->{
+            if(loadingDialog != null) loadingDialog.dismiss();
+
+            presenter.handleLoadedOrder(remoteOrder);
+        });
     }
 
-
+    @Override
+    public void onFailure(String message) {
+        getActivity().runOnUiThread(()->{
+            if(loadingDialog != null) loadingDialog.dismiss();
+            Toaster.show(message);
+        });
+    }
 
     private void initView() {
         SnacksAdapter snacksAdapter = new SnacksAdapter();
@@ -238,5 +268,13 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
     @Override
     public void onClickNegative(int flag) {
 
+    }
+
+
+    private void makeInvisibleAll(){
+        fragmentSnacksBinding.tvNoSnacks.setVisibility(View.INVISIBLE);
+        fragmentSnacksBinding.rvSnacks.setVisibility(View.INVISIBLE);
+        fragmentSnacksBinding.orderedItem.setVisibility(View.INVISIBLE);
+        fragmentSnacksBinding.fabConfirm.setVisibility(View.INVISIBLE);
     }
 }

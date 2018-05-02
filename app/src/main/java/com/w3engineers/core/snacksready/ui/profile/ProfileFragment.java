@@ -4,23 +4,30 @@ package com.w3engineers.core.snacksready.ui.profile;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.w3engineers.core.snacksready.R;
+import com.w3engineers.core.snacksready.data.local.user.User;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
 import com.w3engineers.core.snacksready.databinding.FragmentProfileBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseFragment;
+import com.w3engineers.core.snacksready.ui.main.MainActivity;
 import com.w3engineers.core.snacksready.ui.splash.SplashActivity;
 import com.w3engineers.core.util.helper.DialogUtil;
 import com.w3engineers.core.util.helper.Toaster;
+import com.w3engineers.core.util.lib.network.NetworkService;
 
-public class ProfileFragment extends BaseFragment<ProfileMvpView, ProfilePresenter> implements ProfileMvpView,
-        DialogUtil.DialogButtonListener{
+public class ProfileFragment extends BaseFragment<ProfileMvpView, ProfilePresenter> implements ProfileMvpView, View.OnClickListener,
+        DialogUtil.DialogButtonListener, NetworkService.ValidityCheckerCallBack{
     private String title;
 
     private FragmentProfileBinding fragmentProfileBinding;
+
+    private AlertDialog loadingDialog;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -48,11 +55,35 @@ public class ProfileFragment extends BaseFragment<ProfileMvpView, ProfilePresent
     protected void startUI() {
         if (getArguments() != null) title = getArguments().getString("title");
         fragmentProfileBinding = (FragmentProfileBinding) getViewDataBinding();
+
+        setClickListener(fragmentProfileBinding.btnConfirmLunch, fragmentProfileBinding.btnOrderSnack);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        NetworkService.setValidityCheckerCallBack(this);
+        loadingDialog = DialogUtil.loadingDialogBuilder(getContext(), "Loading info");
+        loadingDialog.setCancelable(true);
+        loadingDialog.setCanceledOnTouchOutside(true);
+        presenter.loadData();
     }
 
     @Override
     protected void stopUI() {
+        NetworkService.removeValidityCheckerCallBack();
+    }
 
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        if(view == fragmentProfileBinding.btnConfirmLunch){
+            MainActivity.runActivityWithFlag(getContext(), 1);
+        }
+        else if(view == fragmentProfileBinding.btnOrderSnack){
+            MainActivity.runActivityWithFlag(getContext(), 0);
+        }
     }
 
     @Override
@@ -89,11 +120,39 @@ public class ProfileFragment extends BaseFragment<ProfileMvpView, ProfilePresent
     }
 
     @Override
+    public void onLoadData(int avatar, User user, String ip) {
+        getActivity().runOnUiThread(()->{
+            fragmentProfileBinding.imgIcon.setImageResource(avatar);
+            fragmentProfileBinding.txtName.setText(user.getName());
+            fragmentProfileBinding.txtOfficeId.setText("Office Id: " + user.getOfficeId());
+            fragmentProfileBinding.txtTeam.setText("Team: " + user.getTeam());
+            fragmentProfileBinding.txtTeam.setVisibility(View.GONE);
+            fragmentProfileBinding.txtIp.setText("IP Address: " + ip);
+        });
+    }
+
+    @Override
     public void onSignOut() {
         getActivity().runOnUiThread(()->{
             Toaster.show("Signed out successfully!");
             SplashActivity.runActivity(getContext());
             getActivity().finish();
+        });
+    }
+
+    @Override
+    public void onResponse(RemoteUser remoteUser) {
+        getActivity().runOnUiThread(()->{
+            if(loadingDialog != null) loadingDialog.dismiss();
+        });
+        presenter.handleUserData(remoteUser);
+    }
+
+    @Override
+    public void onFailure(String message) {
+        getActivity().runOnUiThread(()->{
+            if(loadingDialog != null) loadingDialog.dismiss();
+            Toaster.show(message);
         });
     }
 }

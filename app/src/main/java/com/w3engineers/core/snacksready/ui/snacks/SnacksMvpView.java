@@ -17,6 +17,7 @@ import java.util.List;
 
 interface SnacksMvpView extends MvpView {
     void onSnacksLoaded(List<Snack> snacks);
+    void onOrderLoaded(Snack snacks, String orderedBy);
     void onSnacksNotFound(String message);
     void onSnackConfirmed(String message, boolean success);
 }

@@ -25,6 +25,13 @@ public class MainActivity extends BaseActivity<MainMvpView, MainPresenter> imple
         runCurrentActivity(context, intent);
     }
 
+    public static void runActivityWithFlag(Context context, int flag) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("FLAG", flag);
+
+        runCurrentActivity(context, intent);
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -38,6 +45,10 @@ public class MainActivity extends BaseActivity<MainMvpView, MainPresenter> imple
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         activityMainBinding.viewPager.setAdapter(pagerAdapter);
         activityMainBinding.viewPagerTab.setViewPager(activityMainBinding.viewPager);
+
+        int flag = getIntent().getIntExtra("FLAG", -1);
+
+        if(flag > -1) activityMainBinding.viewPager.setCurrentItem(flag);
     }
 
     @Override

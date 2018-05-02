@@ -13,7 +13,8 @@ package com.w3engineers.core.util.lib.network;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteDirConst;
+import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteConst;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteOrder;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
@@ -33,7 +34,7 @@ public class NetworkService {
     public static void start() {
         if(retrofit==null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl(RemoteDirConst.BASE_URL)
+                    .baseUrl(RemoteConst.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
@@ -79,8 +80,8 @@ public class NetworkService {
         });
     }
 
-    public static void getSnacks(String date){
-        Call<RemoteSnacks> call = networkClientApi.loadSnacks(date);
+    public static void getSnacks(){
+        Call<RemoteSnacks> call = networkClientApi.loadSnacks();
         call.enqueue(new Callback<RemoteSnacks>() {
             @Override
             public void onResponse(@NonNull Call<RemoteSnacks> call, @NonNull Response<RemoteSnacks> response) {
@@ -125,6 +126,29 @@ public class NetworkService {
         });
     }
 
+    public static void loadOrder(String officeId){
+        Call<RemoteOrder> call = networkClientApi.loadOrder(officeId);
+        call.enqueue(new Callback<RemoteOrder>() {
+            @Override
+            public void onResponse(@NonNull Call<RemoteOrder> call, @NonNull Response<RemoteOrder> response) {
+                if (response.isSuccessful()) {
+                    RemoteOrder remoteOrder = response.body();
+                    Log.d(NetworkService.class.getSimpleName(), remoteOrder.getMessage());
+                    if(mSnacksListener != null) mSnacksListener.onLoadOrder(remoteOrder);
+                } else {
+                    Log.d(NetworkService.class.getSimpleName(), response.errorBody().toString());
+                    if(mSnacksListener != null) mSnacksListener.onFailure("Failed to get data. May be Api problem.");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RemoteOrder> call, @NonNull Throwable t) {
+                Log.d(NetworkService.class.getSimpleName(), "Failed::" + t.toString());
+                if(mSnacksListener != null) mSnacksListener.onFailure(t.getMessage());
+            }
+        });
+    }
+
     public interface ValidityCheckerCallBack{
         void onResponse(RemoteUser remoteUser);
         void onFailure(String message);
@@ -133,6 +157,7 @@ public class NetworkService {
     public interface SnacksCallBack{
         void onResponse(RemoteSnacks remoteSnacks);
         void onPlaceOrder(RemoteResponse remoteResponse);
+        void onLoadOrder(RemoteOrder remoteOrder);
         void onFailure(String message);
     }
 }

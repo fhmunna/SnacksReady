@@ -26,5 +26,4 @@ public class DatabaseHelper {
     public static SnackService provideSnackService() {
         return new SnackService(DatabaseService.on().snackDao());
     }
-
 }

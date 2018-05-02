@@ -12,26 +12,6 @@ public class RemoteSnacks {
     @SerializedName("snacks")
     private List<Snack> snacks = null;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public RemoteSnacks() {
-    }
-
-    /**
-     *
-     * @param message
-     * @param snacks
-     * @param success
-     */
-    public RemoteSnacks(Integer success, String message, List<Snack> snacks) {
-        super();
-        this.success = success;
-        this.message = message;
-        this.snacks = snacks;
-    }
-
     public Integer getSuccess() {
         return success;
     }

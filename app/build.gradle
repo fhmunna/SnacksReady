@@ -113,6 +113,15 @@ dependencies {
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.RETROFIT_VERSION"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.RETROFIT_VERSION"
+
+    //navigation drawer
+    implementation("com.mikepenz:materialdrawer:6.0.7@aar") {
+        transitive = true
+        exclude group: 'com.android.support'
+    }
+
+    //font awesome icon
+    implementation 'com.mikepenz:fontawesome-typeface:5.0.6.0@aar'
 }
 
 //annotationProcessor
@@ -157,4 +166,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
 }

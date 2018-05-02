@@ -65,33 +65,4 @@ public class SnackService {
     public LiveData<List<Snack>> getAllSnackLiveData() {
         return mSnackDao.getAllSnacks();
     }
-
-//    public List<Snack> getSharedListFromJson(String json){
-//        JsonUtil util = JsonUtil.getInstance();
-//        List<SharedContent> sharedContents = new ArrayList<>();
-//        FavouriteService favouriteService = DatabaseHelper.provideFavouriteService();
-//        HistoryService historyService = DatabaseHelper.provideHistoryService();
-//
-//        try {
-//            JSONArray array = new JSONArray(json);
-//            int i = 0;
-//            while (i < array.length()) {
-//                SharedContent sharedContent = (SharedContent) util.fromJsonToObject(array.getJSONObject(i).toString(),
-//                        SharedContent.class);
-//
-//                FavouriteContent favouriteContent = favouriteService.getFavouriteContentByName(sharedContent.getContentName());
-//                sharedContent.setFavourite(favouriteContent != null);
-//
-//                HistoryContent historyContent = historyService.getHistoryContentByName(sharedContent.getContentName());
-//                sharedContent.setDownloaded(historyContent != null);
-//
-//                sharedContents.add(sharedContent);
-//                i++;
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return sharedContents;
-//    }
 }

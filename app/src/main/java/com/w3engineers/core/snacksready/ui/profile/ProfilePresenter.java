@@ -10,15 +10,33 @@ package com.w3engineers.core.snacksready.ui.profile;
  *  ****************************************************************************
  */
 
+import com.w3engineers.core.snacksready.R;
+import com.w3engineers.core.snacksready.data.local.appconst.AppConst;
 import com.w3engineers.core.snacksready.data.local.prefstorage.PreferencesHelper;
 import com.w3engineers.core.snacksready.data.local.sharedpreference.SharedPrefLoginInfo;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
+import com.w3engineers.core.util.helper.NetworkUtil;
+import com.w3engineers.core.util.lib.network.NetworkService;
 
 public class ProfilePresenter extends BasePresenter<ProfileMvpView> {
     private SharedPrefLoginInfo sharedPrefLoginInfo;
 
-    public ProfilePresenter(){
+    ProfilePresenter(){
         sharedPrefLoginInfo = PreferencesHelper.provideLoginInfoSharePrefService();
+    }
+
+    void loadData(){
+        NetworkService.checkUserValidity(sharedPrefLoginInfo.getOfficeId());
+    }
+
+    void handleUserData(RemoteUser remoteUser){
+        if(remoteUser.getSuccess() == AppConst.SUCCESS){
+            int avatar = R.drawable.ic_male1;
+            if(sharedPrefLoginInfo.getAvatar() == 1) avatar = R.drawable.ic_female1;
+
+            getMvpView().onLoadData(avatar, remoteUser.getUser(), NetworkUtil.getLocalIpAddress());
+        }
     }
 
     public void signOut(){

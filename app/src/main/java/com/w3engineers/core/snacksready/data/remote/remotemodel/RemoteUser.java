@@ -11,7 +11,6 @@ package com.w3engineers.core.snacksready.data.remote.remotemodel;
  */
 
 import com.google.gson.annotations.SerializedName;
-import com.w3engineers.core.snacksready.data.local.snack.Snack;
 import com.w3engineers.core.snacksready.data.local.user.User;
 
 import java.util.List;
@@ -23,6 +22,8 @@ public class RemoteUser {
     private String message;
     @SerializedName("user")
     private User user = null;
+    @SerializedName("ordered_today")
+    private boolean orderedToday;
 
     public Integer getSuccess() {
         return success;
@@ -46,5 +47,13 @@ public class RemoteUser {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isOrderedToday() {
+        return orderedToday;
+    }
+
+    public void setOrderedToday(boolean orderedToday) {
+        this.orderedToday = orderedToday;
     }
 }

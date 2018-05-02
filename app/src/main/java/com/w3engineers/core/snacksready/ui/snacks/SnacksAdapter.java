@@ -13,19 +13,25 @@ package com.w3engineers.core.snacksready.ui.snacks;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
+import com.w3engineers.core.AppController;
 import com.w3engineers.core.snacksready.R;
 import com.w3engineers.core.snacksready.data.local.snack.Snack;
-import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteDirConst;
+import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteConst;
 import com.w3engineers.core.snacksready.databinding.ItemSnackBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseAdapter;
 import com.w3engineers.core.snacksready.ui.base.BaseViewHolder;
 import com.w3engineers.core.util.helper.Glider;
+import com.w3engineers.core.util.helper.MyBounceInterPolator;
+import com.w3engineers.core.util.helper.NumberUtil;
 
 public class SnacksAdapter extends BaseAdapter<Snack> {
     private int selectedIndex = -1;
     private int prevSelectedIndex = -1;
     private boolean isAnySelection = false;
+    private Animation anim1, anim2;
 
     @Override
     public boolean isEqual(Snack left, Snack right) {
@@ -56,11 +62,19 @@ public class SnacksAdapter extends BaseAdapter<Snack> {
 
         @Override
         public void bind(Snack item) {
+            initAnim();
             mItemSnackBinding.txtTitle.setText(item.getTitle());
             mItemSnackBinding.txtOrderCount.setText(item.getOrderCount() + " orders already");
-            mItemSnackBinding.imgSnack.setLabelText(String.valueOf(item.getOrderCount()));
+            mItemSnackBinding.txtRating.setText(item.getReviewCount() + " reviews") ;
+            float rating = item.getRatingSum()/(float)item.getReviewCount();
+            String ratingStr = "*" + NumberUtil.formatFloatNumber(rating, 2, 2);
+            mItemSnackBinding.imgSnack.setLabelText(ratingStr);
+            mItemSnackBinding.ratingBar.setRating(rating);
 
             if (item.isOrdered()) {
+                mItemSnackBinding.parentContainer.startAnimation(anim1);
+                mItemSnackBinding.itemContainer.startAnimation(anim2);
+
                 mItemSnackBinding.itemSelected.setVisibility(View.VISIBLE);
                 mItemSnackBinding.animationView.setImageAssetsFolder("raw/");
                 mItemSnackBinding.animationView.setAnimation(R.raw.finish_done);
@@ -68,7 +82,7 @@ public class SnacksAdapter extends BaseAdapter<Snack> {
             }
             else mItemSnackBinding.itemSelected.setVisibility(View.INVISIBLE);
 
-            Glider.show(RemoteDirConst.BASE_IMAGE_PATH + item.getImage(), mItemSnackBinding.imgSnack);
+            Glider.show(RemoteConst.BASE_IMAGE_PATH + item.getImage(), mItemSnackBinding.imgSnack);
         }
 
         @Override
@@ -86,6 +100,19 @@ public class SnacksAdapter extends BaseAdapter<Snack> {
             mItemClickListener.onItemClick(view, getItem(selectedIndex));
 
             notifyDataSetChanged();
+        }
+    }
+
+    private void initAnim(){
+        if(anim1 == null) {
+            anim1 =  AnimationUtils.loadAnimation(AppController.getContext(), R.anim.bounce);
+            MyBounceInterPolator interpolator = new MyBounceInterPolator(0.07, 20);
+            anim1.setInterpolator(interpolator);
+        }
+        if(anim2 == null) {
+            anim2 =  AnimationUtils.loadAnimation(AppController.getContext(), R.anim.bounce);
+            MyBounceInterPolator interpolator = new MyBounceInterPolator(0.05, 15);
+            anim2.setInterpolator(interpolator);
         }
     }
 }
