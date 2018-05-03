@@ -10,10 +10,8 @@ import com.w3engineers.core.snacksready.data.local.dbstorage.DatabaseService;
 import com.w3engineers.core.util.helper.Glider;
 import com.w3engineers.core.util.helper.Notify;
 import com.w3engineers.core.util.helper.Toaster;
+import com.w3engineers.core.util.lib.alarm.AlarmHelper;
 import com.w3engineers.core.util.lib.network.NetworkService;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /*
 * ****************************************************************************
@@ -66,17 +64,7 @@ public class AppController extends MultiDexApplication {
         Toaster.init(context);
         Notify.init(context);
         DatabaseService.init(context);
-
-        calligraphy();
-    }
-
-    private void calligraphy() {
-        CalligraphyConfig.initDefault(
-                new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
-        );
+        AlarmHelper.init();
     }
 
     private void LeakCanary() {
@@ -87,7 +75,7 @@ public class AppController extends MultiDexApplication {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+        super.attachBaseContext(newBase);
         MultiDex.install(this);
     }
 }

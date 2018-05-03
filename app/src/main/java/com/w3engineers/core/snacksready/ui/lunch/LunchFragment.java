@@ -8,15 +8,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.w3engineers.core.snacksready.R;
-import com.w3engineers.core.snacksready.data.local.snack.Snack;
+import com.w3engineers.core.snacksready.data.local.lunch.Lunch;
 import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteConst;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteOrder;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
-import com.w3engineers.core.snacksready.databinding.FragmentSnacksBinding;
+import com.w3engineers.core.snacksready.databinding.FragmentLunchBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseFragment;
 import com.w3engineers.core.snacksready.ui.base.ItemClickListener;
-import com.w3engineers.core.snacksready.ui.snacks.SnacksAdapter;
 import com.w3engineers.core.util.helper.DialogUtil;
 import com.w3engineers.core.util.helper.Glider;
 import com.w3engineers.core.util.helper.Toaster;
@@ -27,16 +26,14 @@ import java.util.List;
 
 
 public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> implements LunchMvpView,
-        ItemClickListener<Snack>, Animation.AnimationListener, NetworkService.SnacksCallBack, DialogUtil.DialogButtonListener{
+        ItemClickListener<Lunch>, Animation.AnimationListener, DialogUtil.DialogButtonListener{
     private String title;
 
-    private FragmentSnacksBinding fragmentSnacksBinding;
+    private FragmentLunchBinding fragmentLunchBinding;
 
     private Animation show,hide;
 
     private AlertDialog loadingDialog, orderDialog;
-
-    private Snack selectedSnack;
 
     public LunchFragment() {
         // Required empty public constructor
@@ -53,26 +50,25 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_snacks;
+        return R.layout.fragment_lunch;
     }
 
     @Override
     protected void startUI() {
         if (getArguments() != null) title = getArguments().getString("title");
-        fragmentSnacksBinding = (FragmentSnacksBinding) getViewDataBinding();
+        fragmentLunchBinding = (FragmentLunchBinding) getViewDataBinding();
 
         initView();
 
-        setClickListener(fragmentSnacksBinding.fabConfirm);
+        setClickListener(fragmentLunchBinding.fabConfirm);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(getSnacksAdapter()!=null) getSnacksAdapter().clear();
+        if(getLunchAdapter()!=null) getLunchAdapter().clear();
 
-        NetworkService.setSnacksCallBack(this);
-        loadingDialog = DialogUtil.loadingDialogBuilder(getContext(), "Loading...");
+        //loadingDialog = DialogUtil.loadingDialogBuilder(getContext(), "Loading...");
         presenter.whatToLoad();
     }
 
@@ -84,11 +80,10 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        if(view == fragmentSnacksBinding.fabConfirm){
-            if(selectedSnack != null)
-                DialogUtil.showConfirmationDialog(getContext(),
-                        "Snacks confirmation", "Confirm " + selectedSnack.getTitle(),
-                        "Confirm now", "Choose again", this, DialogUtil.FLAG_CONFIRM);
+        if(view == fragmentLunchBinding.fabConfirm){
+            DialogUtil.showConfirmationDialog(getContext(),
+                    "Lunch confirmation", "Confirm?",
+                    "Confirm now", "Choose again", this, DialogUtil.FLAG_CONFIRM);
         }
     }
 
@@ -98,75 +93,55 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     }
 
     @Override
-    public void onSnacksLoaded(List<Snack> snacks) {
+    public void onLunchListLoaded(List<Lunch> lunchList) {
         getActivity().runOnUiThread(()->{
             makeInvisibleAll();
-            if(snacks == null || snacks.size() == 0) {
-                fragmentSnacksBinding.tvNoSnacks.setVisibility(View.VISIBLE);
-                fragmentSnacksBinding.tvNoSnacks.setText("No snacks yet. Keep patient.");
+            if(lunchList == null || lunchList.size() == 0) {
+                fragmentLunchBinding.tvNoLunch.setVisibility(View.VISIBLE);
+                fragmentLunchBinding.tvNoLunch.setText("No snacks yet. Keep patient.");
             }
             else {
-                fragmentSnacksBinding.rvSnacks.setVisibility(View.VISIBLE);
-                SnacksAdapter snacksAdapter = getSnacksAdapter();
+                fragmentLunchBinding.rvLunch.setVisibility(View.VISIBLE);
+                LunchAdapter lunchAdapter = getLunchAdapter();
 
-                if (snacksAdapter == null) return;
+                if (lunchAdapter == null) return;
 
-                snacksAdapter.addItems(snacks);
+                lunchAdapter.addItems(lunchList);
             }
         });
     }
 
     @Override
-    public void onOrderLoaded(Snack snack, String orderedBy) {
+    public void onOrderLoaded(Lunch lunch, String orderedBy) {
         getActivity().runOnUiThread(()->{
             makeInvisibleAll();
-            Glider.show(RemoteConst.BASE_IMAGE_PATH + snack.getImage(), fragmentSnacksBinding.imgSnack);
-            fragmentSnacksBinding.txtTitle.setText(snack.getTitle());
-            fragmentSnacksBinding.txtReviewCount.setText(snack.getReviewCount() + " reviews");
-            float rating = 0;
-            if(snack.getReviewCount() > 0) rating = snack.getRatingSum()/snack.getReviewCount();
-            fragmentSnacksBinding.ratingBar.setRating(rating);
-            fragmentSnacksBinding.txtOrderCount.setText("Total " + snack.getOrderCount() + " orders");
-            fragmentSnacksBinding.txtOrderedBy.setText("Ordered from IP: " + orderedBy);
-            fragmentSnacksBinding.orderedItem.setVisibility(View.VISIBLE);
+            Glider.show(RemoteConst.BASE_IMAGE_PATH + lunch.getImage(), fragmentLunchBinding.imgLunch);
+            fragmentLunchBinding.txtFixedMenu.setText("Fixed: " + lunch.getFixedMenu());
+            fragmentLunchBinding.txtAlternateMenu.setText("Alternate: " + lunch.getAlternateMenu()[0]);
         });
     }
 
     @Override
-    public void onSnacksNotFound(String message) {
+    public void onLunchNotFound(String message) {
         getActivity().runOnUiThread(()->{
             makeInvisibleAll();
-            fragmentSnacksBinding.tvNoSnacks.setVisibility(View.VISIBLE);
-            fragmentSnacksBinding.tvNoSnacks.setText(message);
+            fragmentLunchBinding.tvNoLunch.setVisibility(View.VISIBLE);
+            fragmentLunchBinding.tvNoLunch.setText(message);
             Toaster.show(message);
         });
     }
 
     @Override
-    public void onSnackConfirmed(String message, boolean success) {
+    public void onLunchConfirmed(String message, boolean success) {
         getActivity().runOnUiThread(()->{
             DialogUtil.messageDialogBuilder(getContext(), 0, message);
         });
     }
 
     @Override
-    public void onItemClick(View view, Snack item) {
+    public void onItemClick(View view, Lunch item) {
         getActivity().runOnUiThread(()->{
-            if(getSnacksAdapter() != null) {
-                fragmentSnacksBinding.fabConfirm.clearAnimation();
-                if(getSnacksAdapter().isAnySelection()) {
-                    selectedSnack = item;
-                    if(fragmentSnacksBinding.fabConfirm.getVisibility() == View.INVISIBLE) {
-                        fragmentSnacksBinding.fabConfirm.setVisibility(View.VISIBLE);
-                        fragmentSnacksBinding.fabConfirm.startAnimation(show);
-                    }
-                }
-                else {
-                    selectedSnack = null;
-                    if(fragmentSnacksBinding.fabConfirm.getVisibility() == View.VISIBLE)
-                        fragmentSnacksBinding.fabConfirm.startAnimation(hide);
-                }
-            }
+
         });
     }
 
@@ -177,9 +152,9 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        fragmentSnacksBinding.fabConfirm.clearAnimation();
+        fragmentLunchBinding.fabConfirm.clearAnimation();
         if(animation == hide)
-            fragmentSnacksBinding.fabConfirm.setVisibility(View.INVISIBLE);
+            fragmentLunchBinding.fabConfirm.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -187,47 +162,14 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
 
     }
 
-    @Override
-    public void onResponse(RemoteSnacks remoteSnacks) {
-        if(loadingDialog != null) loadingDialog.dismiss();
-
-        presenter.handleResponse(remoteSnacks);
-    }
-
-    @Override
-    public void onPlaceOrder(RemoteResponse remoteResponse) {
-        getActivity().runOnUiThread(()->{
-            if(orderDialog != null) orderDialog.dismiss();
-
-            presenter.handleOrderPlacementResponse(remoteResponse);
-        });
-    }
-
-    @Override
-    public void onLoadOrder(RemoteOrder remoteOrder) {
-        getActivity().runOnUiThread(()->{
-            if(loadingDialog != null) loadingDialog.dismiss();
-
-            presenter.handleLoadedOrder(remoteOrder);
-        });
-    }
-
-    @Override
-    public void onFailure(String message) {
-        getActivity().runOnUiThread(()->{
-            if(loadingDialog != null) loadingDialog.dismiss();
-            Toaster.show(message);
-        });
-    }
-
     private void initView() {
-        SnacksAdapter snacksAdapter = new SnacksAdapter();
-        snacksAdapter.setItemClickListener(this);
-        RecyclerView recyclerView = getSnacksRecyclerView();
+        LunchAdapter lunchAdapter = new LunchAdapter();
+        lunchAdapter.setItemClickListener(this);
+        RecyclerView recyclerView = getLunchRecyclerView();
         if (recyclerView == null) return;
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(ViewUtils.newLinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(snacksAdapter);
+        recyclerView.setAdapter(lunchAdapter);
 
         show = AnimationUtils.loadAnimation(getContext(), R.anim.right_in);
         hide = AnimationUtils.loadAnimation(getContext(), R.anim.right_out);
@@ -235,14 +177,14 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
         hide.setAnimationListener(this);
     }
 
-    private RecyclerView getSnacksRecyclerView() {
-        return ViewUtils.getRecyclerView(getActivity(), R.id.rv_snacks);
+    private RecyclerView getLunchRecyclerView() {
+        return ViewUtils.getRecyclerView(getActivity(), R.id.rv_lunch);
     }
 
-    private SnacksAdapter getSnacksAdapter() {
-        RecyclerView.Adapter adapter = ViewUtils.getAdapter(getSnacksRecyclerView());
+    private LunchAdapter getLunchAdapter() {
+        RecyclerView.Adapter adapter = ViewUtils.getAdapter(getLunchRecyclerView());
         if (adapter != null) {
-            return (SnacksAdapter) adapter;
+            return (LunchAdapter) adapter;
         }
         return null;
     }
@@ -251,7 +193,7 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     public void onClickPositive(int flag) {
         if(flag == DialogUtil.FLAG_CONFIRM) {
             orderDialog = DialogUtil.loadingDialogBuilder(getContext(), "Confirming order ...");
-            presenter.confirmSnack(selectedSnack);
+            presenter.confirmLunch();
         }
     }
 
@@ -267,9 +209,8 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
 
 
     private void makeInvisibleAll(){
-        fragmentSnacksBinding.tvNoSnacks.setVisibility(View.INVISIBLE);
-        fragmentSnacksBinding.rvSnacks.setVisibility(View.INVISIBLE);
-        fragmentSnacksBinding.orderedItem.setVisibility(View.INVISIBLE);
-        fragmentSnacksBinding.fabConfirm.setVisibility(View.INVISIBLE);
+        fragmentLunchBinding.tvNoLunch.setVisibility(View.INVISIBLE);
+        fragmentLunchBinding.rvLunch.setVisibility(View.INVISIBLE);
+        fragmentLunchBinding.orderedItem.setVisibility(View.INVISIBLE);
     }
 }

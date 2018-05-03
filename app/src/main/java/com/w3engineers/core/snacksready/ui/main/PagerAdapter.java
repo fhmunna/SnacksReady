@@ -21,8 +21,8 @@ import com.w3engineers.core.snacksready.ui.lunch.LunchFragment;
 */
 
 public class PagerAdapter extends FragmentPagerAdapter {
-    private static int NUM_ITEMS = 3;
-    private String[] titles = {"Snacks", "Lunch", "Profile"};
+    private static int NUM_ITEMS = 2;
+    private String[] titles = {"Snacks", "Lunch"};
 
     public PagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -42,9 +42,6 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
             case 1:
                 return LunchFragment.newInstance(titles[1]);
-
-            case 2:
-                return ProfileFragment.newInstance(titles[2]);
 
             default:
             return null;

@@ -28,4 +28,9 @@ public interface ColumnNames {
     String REVIEW_COUNT = "review_count";
     String RATING_SUM = "rating_sum";
     String IMAGE = "image";
+
+    //Lunch
+    String DATE = "date";
+    String FIXED_MENU = "fixed_menu";
+    String ALTERNATE_MENU = "alternate_menu";
 }

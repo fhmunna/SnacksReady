@@ -15,5 +15,6 @@ import com.w3engineers.core.snacksready.ui.base.MvpView;
 
 public interface ProfileMvpView extends MvpView {
     void onLoadData(int avatar, User user, String ip);
+    void onLoadHomeData(boolean snackOrdered, String snacksMessage, boolean lunchOrdered, String lunchMessage);
     void onSignOut();
 }

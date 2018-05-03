@@ -10,22 +10,22 @@
 */
 package com.w3engineers.core.snacksready.ui.splash;
 
-import android.text.TextUtils;
 
 import com.w3engineers.core.snacksready.data.local.prefstorage.PreferencesHelper;
 import com.w3engineers.core.snacksready.data.local.sharedpreference.SharedPrefLoginInfo;
 import com.w3engineers.core.snacksready.data.local.user.User;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
-import com.w3engineers.core.util.helper.Toaster;
+import com.w3engineers.core.util.helper.Logger;
+import com.w3engineers.core.util.lib.alarm.AlarmHelper;
 import com.w3engineers.core.util.lib.network.NetworkService;
-
-import java.util.logging.Logger;
 
 public class SplashPresenter extends BasePresenter<SplashMvpView> {
     private SharedPrefLoginInfo sharedPrefLoginInfo;
 
     SplashPresenter(){
         sharedPrefLoginInfo = PreferencesHelper.provideLoginInfoSharePrefService();
+
+        //new AlarmHelper().triggerAlarmManager(5);
     }
 
     public void whereToGo(){
@@ -43,8 +43,9 @@ public class SplashPresenter extends BasePresenter<SplashMvpView> {
     }
 
     void processNewUser(User user, int avatar){
+        AlarmHelper.triggerAlarmManager(10);
         if(avatar==-1) avatar = sharedPrefLoginInfo.getAvatar();
-        sharedPrefLoginInfo.storeLoginInfo(user.getOfficeId(), avatar, true, false);
+        sharedPrefLoginInfo.storeLoginInfo(user.getOfficeId(), avatar, true, false, true);
 
         getMvpView().onValidSignIn();
     }
@@ -53,7 +54,6 @@ public class SplashPresenter extends BasePresenter<SplashMvpView> {
         sharedPrefLoginInfo.updateRemembered(isRemembered);
         sharedPrefLoginInfo.updateOrderedToday(isOrderedToday);
 
-        com.w3engineers.core.util.helper.Logger.log("ordered: " + sharedPrefLoginInfo.isOrderedToday());
         getMvpView().onValidSignIn();
     }
 }

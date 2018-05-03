@@ -22,4 +22,5 @@ package com.w3engineers.core.snacksready.data.local.dbstorage;
 
 public interface TableNames {
     String TBL_SNACK = "tbl_snack";
+    String TBL_LUNCH = "tbl_lunch";
 }

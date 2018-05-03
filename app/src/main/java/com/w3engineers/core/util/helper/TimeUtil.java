@@ -192,7 +192,6 @@ public class TimeUtil {
     }
 
     public static long currentTime() {
-
         return System.currentTimeMillis();
     }
 
@@ -392,5 +391,13 @@ public class TimeUtil {
      */
     public static long differ(long time) {
         return currentTime() - time;
+    }
+
+    /**
+     * @param time millis count
+     * @return Returns difference with current timestamp
+     */
+    public static long differ2(long time) {
+        return time - currentTime();
     }
 }

@@ -53,10 +53,7 @@ public class SnacksPresenter extends BasePresenter<SnacksMvpView> {
     }
 
     public void confirmSnack(Snack snack){
-        //long oneDay = 24*60*60*1000;
-        //long milSec = System.currentTimeMillis() - oneDay;
-        NetworkService.placeOrder(TimeUtil.getDateFormat12(System.currentTimeMillis()),
-                sharedPrefLoginInfo.getOfficeId(), snack.getId(), NetworkUtil.getLocalIpAddress());
+        NetworkService.placeOrder(sharedPrefLoginInfo.getOfficeId(), snack.getId(), NetworkUtil.getLocalIpAddress());
     }
 
     public void handleOrderPlacementResponse(RemoteResponse remoteResponse){

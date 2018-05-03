@@ -27,12 +27,14 @@ public class SharedPrefLoginInfo {
             preferences = context.getSharedPreferences(SharedPrefProp.SP_LOGIN, Context.MODE_PRIVATE);
     }
 
-    public void storeLoginInfo(String officeId, int avatar, boolean isRemembered, boolean isOrderedToday) {
+    public void storeLoginInfo(String officeId, int avatar, boolean isRemembered,
+                               boolean isOrderedToday, boolean isAlarmSet) {
         editor = preferences.edit();
         editor.putString(SharedPrefProp.SP_OFFICE_ID, officeId);
         editor.putInt(SharedPrefProp.SP_AVATAR, avatar);
         editor.putBoolean(SharedPrefProp.SP_REMEMBERED, isRemembered);
         editor.putBoolean(SharedPrefProp.SP_ORDERED_TODAY, isOrderedToday);
+        editor.putBoolean(SharedPrefProp.SP_ALARM_SET, isAlarmSet);
         editor.apply();
     }
 
@@ -50,6 +52,10 @@ public class SharedPrefLoginInfo {
 
     public boolean isOrderedToday(){
         return preferences.getBoolean(SharedPrefProp.SP_ORDERED_TODAY, false);
+    }
+
+    public boolean isAlarmSet(){
+        return preferences.getBoolean(SharedPrefProp.SP_ALARM_SET, false);
     }
 
     public void updateOfficeId(String newOfficeId){
@@ -73,6 +79,12 @@ public class SharedPrefLoginInfo {
     public void updateOrderedToday(boolean orderedToday){
         editor = preferences.edit();
         editor.putBoolean(SharedPrefProp.SP_ORDERED_TODAY, orderedToday);
+        editor.apply();
+    }
+
+    public void updateAlarmSet(boolean alarmSet){
+        editor = preferences.edit();
+        editor.putBoolean(SharedPrefProp.SP_ALARM_SET, alarmSet);
         editor.apply();
     }
 

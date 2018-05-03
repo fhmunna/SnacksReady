@@ -10,14 +10,15 @@ package com.w3engineers.core.snacksready.ui.lunch;
  *  ****************************************************************************
  */
 
+import com.w3engineers.core.snacksready.data.local.lunch.Lunch;
 import com.w3engineers.core.snacksready.data.local.snack.Snack;
 import com.w3engineers.core.snacksready.ui.base.MvpView;
 
 import java.util.List;
 
 interface LunchMvpView extends MvpView {
-    void onSnacksLoaded(List<Snack> snacks);
-    void onOrderLoaded(Snack snacks, String orderedBy);
-    void onSnacksNotFound(String message);
-    void onSnackConfirmed(String message, boolean success);
+    void onLunchListLoaded(List<Lunch> lunchList);
+    void onOrderLoaded(Lunch lunch, String orderedBy);
+    void onLunchNotFound(String message);
+    void onLunchConfirmed(String message, boolean success);
 }

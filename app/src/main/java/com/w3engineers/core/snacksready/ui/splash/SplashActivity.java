@@ -32,8 +32,10 @@ import com.w3engineers.core.snacksready.data.local.appconst.AppConst;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
 import com.w3engineers.core.snacksready.databinding.ActivitySplashBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseActivity;
+import com.w3engineers.core.snacksready.ui.home.HomeActivity;
 import com.w3engineers.core.snacksready.ui.main.MainActivity;
 import com.w3engineers.core.util.helper.DialogUtil;
+import com.w3engineers.core.util.helper.Logger;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.lib.network.NetworkService;
 
@@ -114,7 +116,7 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
     public void onValidSignIn() {
         runOnUiThread(()->{
             Toaster.show("Great!!");
-            MainActivity.runActivity(SplashActivity.this);
+            HomeActivity.runActivity(SplashActivity.this);
             overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
             finish();
         });
@@ -242,8 +244,14 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
         else {
             if(inputDialog != null) inputDialog.dismiss();
 
-            if(FLAG_USER_TYPE == NEW_USER) presenter.processNewUser(remoteUser.getUser(), selectedAvatar);
-            else if(FLAG_USER_TYPE == OLD_USER) presenter.processOldUser(isRemembered, remoteUser.isOrderedToday());
+            if(FLAG_USER_TYPE == NEW_USER) {
+                Logger.log("processNewUser: ");
+                presenter.processNewUser(remoteUser.getUser(), selectedAvatar);
+            }
+            else if(FLAG_USER_TYPE == OLD_USER) {
+                Logger.log("processOldUser:: orderedToday: " + remoteUser.isOrderedToday());
+                presenter.processOldUser(isRemembered, remoteUser.isOrderedToday());
+            }
         }
     }
 

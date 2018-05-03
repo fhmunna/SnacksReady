@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorGray">
+
+        <TextView
+            android:id="@+id/tv_no_lunch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="No order yet"
+            android:visibility="visible"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_lunch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/ordered_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/txt_header"
+                style="@style/LoginSignUpLabel"
+                android:text="Your today's Lunch"
+                android:textSize="18sp"
+                android:textAllCaps="true"
+                android:textColor="@color/colorBlack"
+                android:gravity="center" />
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/img_lunch"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_below="@+id/txt_header"
+                android:layout_margin="@dimen/margin_5"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_app"/>
+
+            <TextView
+                android:id="@+id/txt_fixed_menu"
+                style="@style/LoginSignUpLabel"
+                android:layout_below="@+id/img_lunch"
+                android:layout_margin="@dimen/margin_5"
+                android:text="Fixed menu"
+                android:textSize="16sp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/txt_alternate_menu"
+                style="@style/LoginSignUpLabel"
+                android:layout_below="@+id/txt_fixed_menu"
+                android:layout_margin="@dimen/margin_5"
+                android:text="Alternate Menu"
+                android:textSize="16sp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/txt_ordered_by"
+                style="@style/LoginSignUpLabel"
+                android:layout_below="@+id/txt_order_count"
+                android:layout_margin="@dimen/margin_5"
+                android:text="Snack's ordered by"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </RelativeLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_confirm"
+            android:tint="@color/colorPrimary"/>
+    </FrameLayout>
+</layout>

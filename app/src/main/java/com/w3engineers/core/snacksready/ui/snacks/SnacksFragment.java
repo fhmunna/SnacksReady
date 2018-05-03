@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -62,6 +63,11 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
     }
 
     @Override
+    protected int getMenuId() {
+        return R.menu.menu_snacks;
+    }
+
+    @Override
     protected void startUI() {
         if (getArguments() != null) title = getArguments().getString("title");
         fragmentSnacksBinding = (FragmentSnacksBinding) getViewDataBinding();
@@ -100,6 +106,24 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
     @Override
     protected SnacksPresenter initPresenter() {
         return new SnacksPresenter();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_all_snacks:
+                if(item.getTitle().toString().equalsIgnoreCase(getString(R.string.all_snacks))) {
+                    item.setTitle(getString(R.string.today_snacks));
+                    presenter.loadSnacks();
+                }
+                else {
+                    item.setTitle(getString(R.string.all_snacks));
+                    presenter.whatToLoad();
+                }
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -195,6 +219,7 @@ public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter>
     @Override
     public void onResponse(RemoteSnacks remoteSnacks) {
         if(loadingDialog != null) loadingDialog.dismiss();
+        Toaster.show(remoteSnacks.getMessage());
 
         presenter.handleResponse(remoteSnacks);
     }

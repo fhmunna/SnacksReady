@@ -13,10 +13,14 @@ package com.w3engineers.core.snacksready.data.remote.remoteconst;
 public interface RemoteConst {
     String BASE_URL = "https://snacksready.000webhostapp.com/snacks_ready/";
 
-    String API = BASE_URL + "api/";
-    String BASE_IMAGE_PATH = BASE_URL + "img/";
+    String BASE_API_PATH = BASE_URL + "api/";
+    //String BASE_IMAGE_PATH = BASE_URL + "img/";
 
     String DB_NAME = "id5547164_db_snacks";
     String USERNAME = "id5547164_hasnain";
     String PASSWORD = "hasnain";
+
+    String BASE_URL_LOCAL = "http://192.168.2.43/snacks_ready/";
+    String BASE_API_PATH_LOCAL = BASE_URL_LOCAL + "api/";
+    String BASE_IMAGE_PATH = BASE_URL_LOCAL + "img/";
 }

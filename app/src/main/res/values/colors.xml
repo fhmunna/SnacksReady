@@ -12,6 +12,7 @@
     <color name="colorRedLight">#f75843</color>
 
     <color name="colorPrimaryOverlay">#884CAF50</color>
+    <color name="colorPrimaryOverlay2">#CD4CAF50</color>
     <color name="colorBlackOverlay">#88000000</color>
 
     <color name="light_gray">#dbdbdb</color>

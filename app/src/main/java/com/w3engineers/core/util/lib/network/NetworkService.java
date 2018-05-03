@@ -34,7 +34,7 @@ public class NetworkService {
     public static void start() {
         if(retrofit==null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl(RemoteConst.BASE_URL)
+                    .baseUrl(RemoteConst.BASE_API_PATH_LOCAL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
@@ -103,8 +103,8 @@ public class NetworkService {
         });
     }
 
-    public static void placeOrder(String date, String officeId, int snacksId, String ordered_by){
-        Call<RemoteResponse> call = networkClientApi.placeOrder(date, officeId, snacksId, ordered_by);
+    public static void placeOrder(String officeId, int snacksId, String ordered_by){
+        Call<RemoteResponse> call = networkClientApi.placeOrder(officeId, snacksId, ordered_by);
         call.enqueue(new Callback<RemoteResponse>() {
             @Override
             public void onResponse(@NonNull Call<RemoteResponse> call, @NonNull Response<RemoteResponse> response) {

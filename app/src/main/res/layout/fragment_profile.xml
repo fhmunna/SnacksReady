@@ -1,28 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:background="@color/colorGray">
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/colorWhite">
 
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/img_icon"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:src="@drawable/ic_app" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="@dimen/margin_5">
 
-        <TextView
-            android:id="@+id/txt_office_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Office ID"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:tint="@color/colorPrimary" />
-    </LinearLayout>
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/img_icon"
+                    android:layout_width="95dp"
+                    android:layout_height="95dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_app" />
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_icon"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Name"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/txt_office_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_icon"
+                    android:layout_below="@+id/txt_name"
+                    android:layout_marginLeft="10dp"
+                    android:text="Office ID"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorBlack"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/txt_team"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_icon"
+                    android:layout_below="@+id/txt_office_id"
+                    android:layout_marginLeft="10dp"
+                    android:text="Team"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorBlack"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/txt_ip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_icon"
+                    android:layout_below="@+id/txt_team"
+                    android:layout_marginLeft="10dp"
+                    android:text="IP Address"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorBlack"
+                    android:tint="@color/colorPrimary" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_snacks_msg"
+                    style="@style/LoginSignUpLabel"
+                    android:layout_toLeftOf="@+id/btn_order_snack"
+                    android:layout_alignBaseline="@+id/btn_order_snack"
+                    android:text="Order Snacks. Only 1 hour Left!"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"/>
+
+                <Button
+                    android:id="@+id/btn_order_snack"
+                    style="@style/ButtonCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="ORDER NOW"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/LoginSignUpLabel"
+                    android:layout_toLeftOf="@+id/btn_confirm_lunch"
+                    android:layout_alignBaseline="@+id/btn_confirm_lunch"
+                    android:text="Confirm Lunch. Only 1 day Left!"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"/>
+
+                <Button
+                    android:id="@+id/btn_confirm_lunch"
+                    style="@style/ButtonCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="CONFIRM NOW"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </layout>

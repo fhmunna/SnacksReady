@@ -29,6 +29,24 @@
         <item name="android:background">@color/colorBlackOverlay</item>
     </style>
 
+    <style name="CustomTheme" parent="MaterialDrawerTheme">
+        <!-- ...and here we setting appcompat’s color theming attrs -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorWhite</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/colorPrimaryOverlay2</item>
+        <item name="material_drawer_primary_text">@color/colorWhite</item>
+        <item name="material_drawer_primary_icon">@color/colorWhite</item>
+        <item name="material_drawer_secondary_text">@color/colorWhite</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+        <item name="material_drawer_selected">@color/material_drawer_selected</item>
+        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+    </style>
+
     <style name="DefaultAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <!--<item name="colorAccent">#009688</item>-->
         <!-- Used for the buttons -->
@@ -126,6 +144,18 @@
         <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ButtonCircle" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+        <item name="android:padding">@dimen/padding_5</item>
+        <item name="android:background">@drawable/corner_view_green</item>
         <item name="android:textColor">@color/white</item>
     </style>
 </resources>

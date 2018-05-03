@@ -17,7 +17,10 @@ import com.w3engineers.core.snacksready.data.local.sharedpreference.SharedPrefLo
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
 import com.w3engineers.core.util.helper.NetworkUtil;
+import com.w3engineers.core.util.helper.TimeUtil;
 import com.w3engineers.core.util.lib.network.NetworkService;
+
+import java.util.Calendar;
 
 public class ProfilePresenter extends BasePresenter<ProfileMvpView> {
     private SharedPrefLoginInfo sharedPrefLoginInfo;
@@ -28,6 +31,26 @@ public class ProfilePresenter extends BasePresenter<ProfileMvpView> {
 
     void loadData(){
         NetworkService.checkUserValidity(sharedPrefLoginInfo.getOfficeId());
+    }
+
+    void loadHomeData(){
+        String timeLeft = "";
+        if(!sharedPrefLoginInfo.isOrderedToday()){
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 19);
+            calendar.set(Calendar.MINUTE, 0);
+            long differ = TimeUtil.differ2(calendar.getTimeInMillis());
+            if(differ > 0) {
+                differ = differ/1000;
+                if(differ>0 && differ<60) timeLeft = differ + " seconds left!";
+                else if(differ>59 && differ<3600) timeLeft = differ/60 + " min left!";
+                else timeLeft = differ/3600 + " hour left!";
+            }
+            else timeLeft = "Time's up!";
+        }
+        else timeLeft = "Confirmed!";
+
+        getMvpView().onLoadHomeData(sharedPrefLoginInfo.isOrderedToday(), timeLeft, false, "");
     }
 
     void handleUserData(RemoteUser remoteUser){

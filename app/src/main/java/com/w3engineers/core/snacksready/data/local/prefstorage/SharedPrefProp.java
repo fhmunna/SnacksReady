@@ -16,4 +16,5 @@ public interface SharedPrefProp {
     String SP_AVATAR = "sp_avatar";
     String SP_REMEMBERED = "sp_remembered";
     String SP_ORDERED_TODAY = "sp_ordered_today";
+    String SP_ALARM_SET = "sp_alarm_set";
 }

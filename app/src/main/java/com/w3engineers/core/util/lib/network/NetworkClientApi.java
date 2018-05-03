@@ -20,18 +20,17 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface NetworkClientApi {
-    @GET("api/user_validity.php")
+    @GET("user_validity.php")
     Call<RemoteUser> checkUserValidity(@Query("office_id") String officeId);
 
-    @GET("api/snacks.php")
+    @GET("snacks.php")
     Call<RemoteSnacks> loadSnacks();
 
-    @GET("api/order.php")
+    @GET("order.php")
     Call<RemoteOrder> loadOrder(@Query("office_id") String officeId);
 
-    @GET("api/save_order.php")
-    Call<RemoteResponse> placeOrder(@Query("date") String date,
-                                    @Query("office_id") String officeId,
+    @GET("save_order.php")
+    Call<RemoteResponse> placeOrder(@Query("office_id") String officeId,
                                     @Query("snacks_id") int snacksId,
                                     @Query("ordered_by") String orderedBy);
 }

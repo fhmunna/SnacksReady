@@ -33,12 +33,12 @@
 
         <TextView
             android:id="@+id/splash_text"
-            android:layout_width="250dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/splash_image"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="79dp"
-            android:text="SnAcK TiMe"
+            android:text="SnAcKs ReAdY"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="38sp"
