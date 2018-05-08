@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteConst;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteLunchList;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteOrder;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
@@ -30,6 +31,7 @@ public class NetworkService {
     private static NetworkClientApi networkClientApi;
     private static ValidityCheckerCallBack mValidityListener;
     private static SnacksCallBack mSnacksListener;
+    private static LunchCallBack mLunchCallBack;
     private static AdminValidatorCallBack mAdminValidatorCallBack;
 
     public static void start() {
@@ -46,20 +48,28 @@ public class NetworkService {
         mValidityListener = validityCheckerCallBack;
     }
 
-    public static void removeValidityCheckerCallBack(){
-        mValidityListener = null;
-    }
-
     public static void setSnacksCallBack(SnacksCallBack snacksCallBack){
         mSnacksListener = snacksCallBack;
+    }
+
+    public static void setLunchCallBack(LunchCallBack lunchCallBack){
+        mLunchCallBack = lunchCallBack;
+    }
+
+    public static void setAdminValidatorCallBack(AdminValidatorCallBack adminValidatorCallBack){
+        mAdminValidatorCallBack = adminValidatorCallBack;
+    }
+
+    public static void removeValidityCheckerCallBack(){
+        mValidityListener = null;
     }
 
     public static void removeSnacksCallBack(){
         mSnacksListener = null;
     }
 
-    public static void setAdminValidatorCallBack(AdminValidatorCallBack adminValidatorCallBack){
-        mAdminValidatorCallBack = adminValidatorCallBack;
+    public static void removeLunchCallBack(){
+        mLunchCallBack = null;
     }
 
     public static void removeAdminValidatorCallBack(){
@@ -158,6 +168,29 @@ public class NetworkService {
         });
     }
 
+    public static void getLunchList(){
+        Call<RemoteLunchList> call = networkClientApi.loadLunchList();
+        call.enqueue(new Callback<RemoteLunchList>() {
+            @Override
+            public void onResponse(@NonNull Call<RemoteLunchList> call, @NonNull Response<RemoteLunchList> response) {
+                if (response.isSuccessful()) {
+                    RemoteLunchList remoteLunchList = response.body();
+                    Log.d(NetworkService.class.getSimpleName(), remoteLunchList.getMessage());
+                    if(mLunchCallBack != null) mLunchCallBack.onResponse(remoteLunchList);
+                } else {
+                    Log.d(NetworkService.class.getSimpleName(), response.errorBody().toString());
+                    if(mLunchCallBack != null) mLunchCallBack.onFailure("Failed to get data. May be Api problem.");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RemoteLunchList> call, @NonNull Throwable t) {
+                Log.d(NetworkService.class.getSimpleName(), "Failed::" + t.toString());
+                if(mLunchCallBack != null) mLunchCallBack.onFailure(t.getMessage());
+            }
+        });
+    }
+
     public static void checkAdminValidity(String officeId, String pin){
         Call<RemoteResponse> call = networkClientApi.checkAdminValidity(officeId, pin);
         call.enqueue(new Callback<RemoteResponse>() {
@@ -179,22 +212,5 @@ public class NetworkService {
                 if(mAdminValidatorCallBack != null) mAdminValidatorCallBack.onFailure(t.getMessage());
             }
         });
-    }
-
-    public interface ValidityCheckerCallBack{
-        void onResponse(RemoteUser remoteUser);
-        void onFailure(String message);
-    }
-
-    public interface SnacksCallBack{
-        void onResponse(RemoteSnacks remoteSnacks);
-        void onPlaceOrder(RemoteResponse remoteResponse);
-        void onLoadOrder(RemoteOrder remoteOrder);
-        void onFailure(String message);
-    }
-
-    public interface AdminValidatorCallBack {
-        void onResponse(RemoteResponse remoteResponse);
-        void onFailure(String message);
     }
 }

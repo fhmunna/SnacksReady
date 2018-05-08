@@ -22,12 +22,13 @@ import com.w3engineers.core.util.helper.Glider;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.helper.ViewUtils;
 import com.w3engineers.core.util.lib.network.NetworkService;
+import com.w3engineers.core.util.lib.network.SnacksCallBack;
 
 import java.util.List;
 
 
 public class SnacksFragment extends BaseFragment<SnacksMvpView, SnacksPresenter> implements SnacksMvpView,
-        ItemClickListener<Snack>, Animation.AnimationListener, NetworkService.SnacksCallBack, DialogUtil.DialogButtonListener{
+        ItemClickListener<Snack>, Animation.AnimationListener, SnacksCallBack, DialogUtil.DialogButtonListener{
     private String title;
 
     private FragmentSnacksBinding fragmentSnacksBinding;

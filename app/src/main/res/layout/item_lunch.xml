@@ -6,19 +6,19 @@
         android:id="@+id/parent_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:layout_margin="8dp">
 
         <RelativeLayout
             android:id="@+id/item_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
 
             <com.lid.lib.LabelImageView
                 android:id="@+id/img_lunch"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:scaleType="centerCrop"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerInside"
                 android:src="@drawable/ic_app"
                 app:label_backgroundColor="@color/colorPrimary"
                 app:label_orientation="LEFT_TOP"
@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/img_lunch"
-                android:background="@color/colorPrimary"
+                android:layout_marginLeft="@dimen/margin_5"
                 android:padding="5dp">
 
                 <TextView
@@ -60,31 +60,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/txt_fixed_menu"
                     android:text="Alternatives"
-                    android:textSize="14sp">
-
-                    <RadioButton
-                        android:id="@+id/rb_menu_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Menu 1"
-                        android:textColor="@color/colorWhite"
-                        android:buttonTint="@color/colorWhite"/>
-
-                    <RadioButton
-                        android:id="@+id/rb_menu_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Menu 2"
-                        android:textColor="@color/colorWhite"
-                        android:buttonTint="@color/colorWhite"/>
-
-                    <RadioButton
-                        android:id="@+id/rb_menu_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Menu 3"
-                        android:textColor="@color/colorWhite"
-                        android:buttonTint="@color/colorWhite"/>
+                    android:textSize="14sp"
+                    android:orientation="vertical">
                 </RadioGroup>
             </RelativeLayout>
         </RelativeLayout>

@@ -38,9 +38,10 @@ import com.w3engineers.core.util.helper.DialogUtil;
 import com.w3engineers.core.util.helper.Logger;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.lib.network.NetworkService;
+import com.w3engineers.core.util.lib.network.ValidityCheckerCallBack;
 
 public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter> implements SplashMvpView,
-        NetworkService.ValidityCheckerCallBack{
+        ValidityCheckerCallBack {
 
     private static final int SPLASH_TIME = 2000;
 

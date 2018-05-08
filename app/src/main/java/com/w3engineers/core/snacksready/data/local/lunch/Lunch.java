@@ -40,20 +40,16 @@ public class Lunch extends BaseObservable {
     private String mFixedMenu;
     @SerializedName("alternate_menu")
     @ColumnInfo(name = ColumnNames.ALTERNATE_MENU)
-    private String[] mAlternateMenu;
-    @SerializedName("image")
-    @ColumnInfo(name = ColumnNames.IMAGE)
-    private String mImage;
+    private String mAlternateMenu;
 
     @Ignore
     private boolean mIsOrdered;
 
-    public Lunch(String mDate, String mTitle, String mFixedMenu, String[] mAlternateMenu, String mImage) {
+    public Lunch(String mDate, String mTitle, String mFixedMenu, String mAlternateMenu) {
         this.mDate = mDate;
         this.mTitle = mTitle;
         this.mFixedMenu = mFixedMenu;
         this.mAlternateMenu = mAlternateMenu;
-        this.mImage = mImage;
         this.mIsOrdered = false;
     }
 
@@ -89,20 +85,12 @@ public class Lunch extends BaseObservable {
         this.mFixedMenu = fixedMenu;
     }
 
-    public String[] getAlternateMenu() {
+    public String getAlternateMenu() {
         return mAlternateMenu;
     }
 
-    public void setAlternateMenu(String[] alternateMenu) {
+    public void setAlternateMenu(String alternateMenu) {
         this.mAlternateMenu = alternateMenu;
-    }
-
-    public String getImage() {
-        return mImage;
-    }
-
-    public void setImage(String image) {
-        this.mImage = image;
     }
 
     public boolean isOrdered() {
