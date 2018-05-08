@@ -44,7 +44,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return LunchFragment.newInstance(titles[1]);
 
             default:
-            return null;
+                return null;
         }
     }
 

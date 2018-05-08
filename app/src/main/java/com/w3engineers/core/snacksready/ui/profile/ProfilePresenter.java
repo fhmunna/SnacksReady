@@ -37,7 +37,7 @@ public class ProfilePresenter extends BasePresenter<ProfileMvpView> {
         String timeLeft = "";
         if(!sharedPrefLoginInfo.isOrderedToday()){
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 19);
+            calendar.set(Calendar.HOUR_OF_DAY, 12);
             calendar.set(Calendar.MINUTE, 0);
             long differ = TimeUtil.differ2(calendar.getTimeInMillis());
             if(differ > 0) {
