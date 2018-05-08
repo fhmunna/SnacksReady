@@ -23,4 +23,7 @@ public interface RemoteConst {
     String BASE_URL_LOCAL = "http://192.168.2.43/snacks_ready/";
     String BASE_API_PATH_LOCAL = BASE_URL_LOCAL + "api/";
     String BASE_IMAGE_PATH = BASE_URL_LOCAL + "img/";
+
+
+    String ADMIN_BASE_URL_LOCAL = "http://192.168.2.43/W3_lunch_Project";
 }

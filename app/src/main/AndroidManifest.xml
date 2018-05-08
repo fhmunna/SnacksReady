@@ -41,6 +41,12 @@
 
         <activity android:name=".ui.home.HomeActivity"
             android:theme="@style/CustomTheme"/>
+
+        <activity
+            android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:theme="@style/FinestWebViewTheme.Light" />
     </application>
 
 </manifest>

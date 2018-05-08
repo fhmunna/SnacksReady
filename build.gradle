@@ -78,4 +78,6 @@ ext {
 
     //network library versions
     RETROFIT_VERSION = '2.3.0'
+
+    FINEST_WEBVIEW_VERSION = '1.2.7'
 }

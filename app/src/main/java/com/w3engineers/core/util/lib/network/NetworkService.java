@@ -30,6 +30,7 @@ public class NetworkService {
     private static NetworkClientApi networkClientApi;
     private static ValidityCheckerCallBack mValidityListener;
     private static SnacksCallBack mSnacksListener;
+    private static AdminValidatorCallBack mAdminValidatorCallBack;
 
     public static void start() {
         if(retrofit==null){
@@ -55,6 +56,14 @@ public class NetworkService {
 
     public static void removeSnacksCallBack(){
         mSnacksListener = null;
+    }
+
+    public static void setAdminValidatorCallBack(AdminValidatorCallBack adminValidatorCallBack){
+        mAdminValidatorCallBack = adminValidatorCallBack;
+    }
+
+    public static void removeAdminValidatorCallBack(){
+        mAdminValidatorCallBack = null;
     }
 
     public static void checkUserValidity(String officeId){
@@ -149,6 +158,29 @@ public class NetworkService {
         });
     }
 
+    public static void checkAdminValidity(String officeId, String pin){
+        Call<RemoteResponse> call = networkClientApi.checkAdminValidity(officeId, pin);
+        call.enqueue(new Callback<RemoteResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RemoteResponse> call, @NonNull Response<RemoteResponse> response) {
+                if (response.isSuccessful()) {
+                    RemoteResponse remoteResponse = response.body();
+                    Log.d(NetworkService.class.getSimpleName(), remoteResponse.getMessage());
+                    if(mAdminValidatorCallBack != null) mAdminValidatorCallBack.onResponse(remoteResponse);
+                } else {
+                    Log.d(NetworkService.class.getSimpleName(), response.errorBody().toString());
+                    if(mAdminValidatorCallBack != null) mAdminValidatorCallBack.onFailure("Failed to get data. May be Api problem.");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RemoteResponse> call, @NonNull Throwable t) {
+                Log.d(NetworkService.class.getSimpleName(), "Failed::" + t.toString());
+                if(mAdminValidatorCallBack != null) mAdminValidatorCallBack.onFailure(t.getMessage());
+            }
+        });
+    }
+
     public interface ValidityCheckerCallBack{
         void onResponse(RemoteUser remoteUser);
         void onFailure(String message);
@@ -158,6 +190,11 @@ public class NetworkService {
         void onResponse(RemoteSnacks remoteSnacks);
         void onPlaceOrder(RemoteResponse remoteResponse);
         void onLoadOrder(RemoteOrder remoteOrder);
+        void onFailure(String message);
+    }
+
+    public interface AdminValidatorCallBack {
+        void onResponse(RemoteResponse remoteResponse);
         void onFailure(String message);
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true">
+
+            <EditText
+                android:id="@+id/et_admin_pin"
+                style="@style/LoginSignUpInput"
+                android:inputType="text"
+                android:hint="Enter admin pin"
+                android:textColorHint="@color/dark_gray"
+                android:gravity="center"/>
+
+            <Button
+                android:id="@+id/btn_validator"
+                style="@style/ButtonPrimary"
+                android:text="Check Validity"/>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

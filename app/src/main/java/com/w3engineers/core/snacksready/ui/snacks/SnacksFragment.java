@@ -1,18 +1,14 @@
 package com.w3engineers.core.snacksready.ui.snacks;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.w3engineers.core.snacksready.R;
-import com.w3engineers.core.snacksready.data.local.appconst.AppConst;
 import com.w3engineers.core.snacksready.data.local.snack.Snack;
 import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteConst;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteOrder;
@@ -23,8 +19,6 @@ import com.w3engineers.core.snacksready.ui.base.BaseFragment;
 import com.w3engineers.core.snacksready.ui.base.ItemClickListener;
 import com.w3engineers.core.util.helper.DialogUtil;
 import com.w3engineers.core.util.helper.Glider;
-import com.w3engineers.core.util.helper.ItemDecorationUtil;
-import com.w3engineers.core.util.helper.TimeUtil;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.helper.ViewUtils;
 import com.w3engineers.core.util.lib.network.NetworkService;

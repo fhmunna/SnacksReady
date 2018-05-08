@@ -21,6 +21,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SwitchDrawerItem;
 import com.w3engineers.core.snacksready.R;
+import com.w3engineers.core.snacksready.ui.admin.AdminFragment;
 import com.w3engineers.core.snacksready.ui.base.BaseActivity;
 import com.w3engineers.core.snacksready.ui.main.MainActivity;
 import com.w3engineers.core.snacksready.ui.profile.ProfileFragment;
@@ -30,7 +31,7 @@ import com.w3engineers.core.util.helper.Toaster;
 import java.util.Calendar;
 
 public class HomeActivity extends BaseActivity<HomeMvpView, HomePresenter> implements HomeMvpView {
-    private final int HOME = 1, ORDER_SNACK = 2, CONFIRM_LUNCH = 3, SNACKS_REMAINDER = 4, LOGOUT = 5;
+    private final int HOME = 1, ORDER_SNACK = 2, CONFIRM_LUNCH = 3, SNACKS_REMAINDER = 4, ADMIN = 5, LOGOUT = 6;
 
     //Drawer items
     private PrimaryDrawerItem itemHome = new PrimaryDrawerItem()
@@ -47,6 +48,9 @@ public class HomeActivity extends BaseActivity<HomeMvpView, HomePresenter> imple
             .withIdentifier(SNACKS_REMAINDER)
             .withIcon(FontAwesome.Icon.faw_bell)
             .withChecked(true);
+    private SecondaryDrawerItem itemAdmin = new SecondaryDrawerItem().withName(R.string.drawer_item_admin)
+            .withIdentifier(ADMIN)
+            .withIcon(FontAwesome.Icon.faw_user_secret);
     private Drawer drawer;
     private AccountHeader accountHeader;
 
@@ -114,7 +118,9 @@ public class HomeActivity extends BaseActivity<HomeMvpView, HomePresenter> imple
                         itemOrderSnacks,
                         itemConfirmLunch,
                         new DividerDrawerItem(),
-                        itemSnacksRemainder
+                        itemSnacksRemainder,
+                        new DividerDrawerItem(),
+                        itemAdmin
                 )
                 .withSelectedItem(-1)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
@@ -147,6 +153,7 @@ public class HomeActivity extends BaseActivity<HomeMvpView, HomePresenter> imple
         Fragment fragment = null;
         switch (position){
             case HOME:
+                setTitle("Home");
                 fragment = ProfileFragment.newInstance("Profile");
                 break;
 
@@ -159,6 +166,11 @@ public class HomeActivity extends BaseActivity<HomeMvpView, HomePresenter> imple
                 break;
 
             case SNACKS_REMAINDER:
+                break;
+
+            case ADMIN:
+                setTitle("Admin");
+                fragment = AdminFragment.newInstance("Admin");
                 break;
 
             case LOGOUT:

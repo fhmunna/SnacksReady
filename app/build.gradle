@@ -119,6 +119,9 @@ dependencies {
 
     //font awesome icon
     implementation 'com.mikepenz:fontawesome-typeface:5.0.6.0@aar'
+
+    //finest web view
+    implementation "com.thefinestartist:finestwebview:$rootProject.FINEST_WEBVIEW_VERSION"
 }
 
 //annotationProcessor
@@ -167,4 +170,8 @@ dependencies {
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:27.+'
 }

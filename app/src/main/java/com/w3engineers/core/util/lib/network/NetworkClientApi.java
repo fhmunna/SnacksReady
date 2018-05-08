@@ -33,4 +33,7 @@ public interface NetworkClientApi {
     Call<RemoteResponse> placeOrder(@Query("office_id") String officeId,
                                     @Query("snacks_id") int snacksId,
                                     @Query("ordered_by") String orderedBy);
+    @GET("admin_validity.php")
+    Call<RemoteResponse> checkAdminValidity(@Query("office_id") String officeId,
+                                    @Query("pin") String pin);
 }
