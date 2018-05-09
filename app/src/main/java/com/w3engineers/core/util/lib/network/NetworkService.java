@@ -196,6 +196,29 @@ public class NetworkService {
         });
     }
 
+    public static void getOrderedLunchList(String officeId){
+        Call<RemoteLunchList> call = networkClientApi.getOrderedLunchList(officeId);
+        call.enqueue(new Callback<RemoteLunchList>() {
+            @Override
+            public void onResponse(@NonNull Call<RemoteLunchList> call, @NonNull Response<RemoteLunchList> response) {
+                if (response.isSuccessful()) {
+                    RemoteLunchList remoteLunchList = response.body();
+                    Log.d(NetworkService.class.getSimpleName(), remoteLunchList.getMessage());
+                    if(mLunchCallBack != null) mLunchCallBack.onLoadOrderedLunchList(remoteLunchList);
+                } else {
+                    Log.d(NetworkService.class.getSimpleName(), response.errorBody().toString());
+                    if(mLunchCallBack != null) mLunchCallBack.onFailure("Failed to get data. May be Api problem.");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RemoteLunchList> call, @NonNull Throwable t) {
+                Log.d(NetworkService.class.getSimpleName(), "Failed::" + t.toString());
+                if(mLunchCallBack != null) mLunchCallBack.onFailure(t.getMessage());
+            }
+        });
+    }
+
     public static void saveOrderedLunch(String officeId, String lunchJson){
         Call<RemoteResponse> call = networkClientApi.saveOrderedLunch(officeId, lunchJson,
                 NetworkUtil.getLocalIpAddress());

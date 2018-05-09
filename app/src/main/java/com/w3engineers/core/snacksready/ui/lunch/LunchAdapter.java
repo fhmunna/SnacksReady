@@ -35,9 +35,14 @@ import java.util.List;
 
 public class LunchAdapter extends BaseAdapter<Lunch> {
     private static OnLunchSelected mListener;
+    private static boolean mIsLunchOrdered = false;
 
     public void setListener(OnLunchSelected listener){
         mListener = listener;
+    }
+
+    public void setIsLunchOrdered(boolean isLunchOrdered){
+        mIsLunchOrdered = isLunchOrdered;
     }
 
     @Override
@@ -79,19 +84,28 @@ public class LunchAdapter extends BaseAdapter<Lunch> {
         @Override
         public void bind(Lunch item) {
             mItemLunchBinding.txtDate.setText(item.getDate());
-            mItemLunchBinding.txtFixedMenu.setText("Fixed: " + item.getFixedMenu());
+            String strMenu = "Fixed: " + item.getFixedMenu()+"\n";
 
             if(!item.getAlternateMenu().equals("")){
-                String[] alterMenu = item.getAlternateMenu().split(",");
-                mItemLunchBinding.rgMenu.removeAllViews();
-                for (String str : alterMenu) {
-                    boolean checked = false;
-                    String selectedAlterMenu = item.getSelectedAlterMenu();
-                    if(selectedAlterMenu != null && selectedAlterMenu.equalsIgnoreCase(str))
-                        checked = true;
-                    mItemLunchBinding.rgMenu.addView(createRadioButton(str, checked));
+                if(mIsLunchOrdered){
+                    mItemLunchBinding.rgMenu.setVisibility(View.INVISIBLE);
+                    strMenu = "\nLunch menu: \n1. " + item.getFixedMenu() + "\n2. " + item.getAlternateMenu();
+                }
+                else {
+                    mItemLunchBinding.rgMenu.setVisibility(View.VISIBLE);
+                    String[] alterMenu = item.getAlternateMenu().split(",");
+                    mItemLunchBinding.rgMenu.removeAllViews();
+                    for (String str : alterMenu) {
+                        boolean checked = false;
+                        String selectedAlterMenu = item.getSelectedAlterMenu();
+                        if(selectedAlterMenu != null && selectedAlterMenu.equalsIgnoreCase(str))
+                            checked = true;
+                        mItemLunchBinding.rgMenu.addView(createRadioButton(str, checked));
+                    }
                 }
             }
+
+            mItemLunchBinding.txtFixedMenu.setText(strMenu);
         }
 
         @Override

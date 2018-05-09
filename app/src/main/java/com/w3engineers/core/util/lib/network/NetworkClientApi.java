@@ -43,6 +43,9 @@ public interface NetworkClientApi {
                                     @Query("lunch") String lunchJson,
                                     @Query("ordered_by") String orderedBy);
 
+    @GET("lunch_ordered.php")
+    Call<RemoteLunchList> getOrderedLunchList(@Query("office_id") String officeId);
+
     @GET("admin_validity.php")
     Call<RemoteResponse> checkAdminValidity(@Query("office_id") String officeId,
                                     @Query("pin") String pin);

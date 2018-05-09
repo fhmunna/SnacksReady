@@ -32,9 +32,6 @@ public class Lunch extends BaseObservable {
     @SerializedName("date")
     @ColumnInfo(name = ColumnNames.DATE)
     private String mDate;
-    @SerializedName("title")
-    @ColumnInfo(name = ColumnNames.TITLE)
-    private String mTitle;
     @SerializedName("fixed_menu")
     @ColumnInfo(name = ColumnNames.FIXED_MENU)
     private String mFixedMenu;
@@ -47,9 +44,8 @@ public class Lunch extends BaseObservable {
     @Ignore
     private boolean mIsOrdered;
 
-    public Lunch(String mDate, String mTitle, String mFixedMenu, String mAlternateMenu) {
+    public Lunch(String mDate, String mFixedMenu, String mAlternateMenu) {
         this.mDate = mDate;
-        this.mTitle = mTitle;
         this.mFixedMenu = mFixedMenu;
         this.mAlternateMenu = mAlternateMenu;
         this.mSelectedAlterMenu = "";
@@ -70,14 +66,6 @@ public class Lunch extends BaseObservable {
 
     public void setDate(String date) {
         this.mDate = date;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void setTitle(String title) {
-        this.mTitle = title;
     }
 
     public String getFixedMenu() {

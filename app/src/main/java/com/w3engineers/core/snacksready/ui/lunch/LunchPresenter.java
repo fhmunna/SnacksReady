@@ -31,11 +31,20 @@ public class LunchPresenter extends BasePresenter<LunchMvpView> {
     }
 
     public void whatToLoad(){
-        loadLunch();
+        getMvpView().onLoadLocalData(sharedPrefLoginInfo.isLunchConfirmed());
+
+        if(sharedPrefLoginInfo.isLunchConfirmed())
+            loadConfirmedLunch();
+        else
+            loadLunch();
     }
 
     void loadLunch(){
         NetworkService.getLunchList();
+    }
+
+    void loadConfirmedLunch(){
+        NetworkService.getOrderedLunchList(sharedPrefLoginInfo.getOfficeId());
     }
 
     public void confirmLunch(List<Lunch> orderedLunch){
@@ -50,6 +59,8 @@ public class LunchPresenter extends BasePresenter<LunchMvpView> {
     }
 
     void handleRemoteLunchOrderConfirmationResponse(RemoteResponse remoteResponse){
+        if(remoteResponse.getSuccess() == AppConst.SUCCESS) sharedPrefLoginInfo.updateLunchConfirmed(true);
+
         getMvpView().onLunchConfirmed(remoteResponse.getMessage(),
                 remoteResponse.getSuccess() == AppConst.SUCCESS);
     }

@@ -14,9 +14,11 @@ import com.w3engineers.core.snacksready.data.local.lunch.Lunch;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteLunchList;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 
+import java.util.List;
+
 public interface LunchCallBack {
     void onResponse(RemoteLunchList remoteLunchList);
     void onConfirmLunch(RemoteResponse remoteResponse);
-    void onLoadLunch(Lunch lunch);
+    void onLoadOrderedLunchList(RemoteLunchList remoteLunchList);
     void onFailure(String message);
 }

@@ -17,6 +17,7 @@ import com.w3engineers.core.snacksready.ui.base.MvpView;
 import java.util.List;
 
 interface LunchMvpView extends MvpView {
+    void onLoadLocalData(boolean isLunchOrdered);
     void onLunchListLoaded(List<Lunch> lunchList);
     void onOrderLoaded(Lunch lunch, String orderedBy);
     void onLunchNotFound(String message);

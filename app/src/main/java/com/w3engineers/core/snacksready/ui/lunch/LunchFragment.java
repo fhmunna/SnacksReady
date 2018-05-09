@@ -3,6 +3,8 @@ package com.w3engineers.core.snacksready.ui.lunch;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -58,6 +60,11 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     }
 
     @Override
+    protected int getMenuId() {
+        return R.menu.menu_lunch;
+    }
+
+    @Override
     protected void startUI() {
         if (getArguments() != null) title = getArguments().getString("title");
         fragmentLunchBinding = (FragmentLunchBinding) getViewDataBinding();
@@ -97,8 +104,44 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_change_lunch:
+                String title = item.getTitle().toString();
+
+                if(title.equalsIgnoreCase("Change")) {
+                    title = "My Lunch";
+                    presenter.loadLunch();
+                }
+                else {
+                    title = "Change";
+                    presenter.loadConfirmedLunch();
+                }
+                item.setTitle(title);
+
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    @Override
     protected LunchPresenter initPresenter() {
         return new LunchPresenter();
+    }
+
+    @Override
+    public void onLoadLocalData(boolean isLunchOrdered) {
+        getActivity().runOnUiThread(()->{
+            if(isLunchOrdered) {
+                fragmentLunchBinding.fabConfirm.setVisibility(View.INVISIBLE);
+            }
+            else {
+                fragmentLunchBinding.fabConfirm.setVisibility(View.VISIBLE);
+            }
+            getLunchAdapter().setIsLunchOrdered(isLunchOrdered);
+        });
     }
 
     @Override
@@ -111,9 +154,12 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
             }
             else {
                 numOfItems = lunchList.size();
+                for(Lunch lunch : lunchList){
+                    if(lunch.getAlternateMenu() == null || TextUtils.isEmpty(lunch.getAlternateMenu()))
+                        orderedItems.add(lunch);
+                }
                 fragmentLunchBinding.rvLunch.setVisibility(View.VISIBLE);
                 LunchAdapter lunchAdapter = getLunchAdapter();
-
                 if (lunchAdapter == null) return;
 
                 lunchAdapter.addItems(lunchList);
@@ -144,6 +190,7 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     public void onLunchConfirmed(String message, boolean success) {
         getActivity().runOnUiThread(()->{
             DialogUtil.messageDialogBuilder(getContext(), 0, message);
+            presenter.whatToLoad();
         });
     }
 
@@ -159,6 +206,8 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
         if(loadingDialog != null) loadingDialog.dismiss();
 
         if(remoteLunchList.getSuccess() == AppConst.SUCCESS){
+            getLunchAdapter().setIsLunchOrdered(false);
+            fragmentLunchBinding.fabConfirm.setVisibility(View.VISIBLE);
             presenter.handleRemoteLunchResponse(remoteLunchList);
         }
         else
@@ -173,9 +222,18 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     }
 
     @Override
-    public void onLoadLunch(Lunch lunch) {
+    public void onLoadOrderedLunchList(RemoteLunchList remoteLunchList) {
         if(loadingDialog != null) loadingDialog.dismiss();
 
+        if(remoteLunchList.getSuccess() ==AppConst.SUCCESS){
+            getLunchAdapter().setIsLunchOrdered(true);
+            fragmentLunchBinding.fabConfirm.setVisibility(View.INVISIBLE);
+        }
+        else {
+            getLunchAdapter().setIsLunchOrdered(false);
+            fragmentLunchBinding.fabConfirm.setVisibility(View.VISIBLE);
+        }
+        presenter.handleRemoteLunchResponse(remoteLunchList);
     }
 
     @Override
@@ -186,8 +244,7 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
 
     @Override
     public void onSelected(int position, Lunch selectedLunch, String selectedMenu) {
-        Lunch l = new Lunch(selectedLunch.getDate(), selectedLunch.getTitle(),
-                selectedLunch.getFixedMenu(), selectedMenu);
+        Lunch l = new Lunch(selectedLunch.getDate(), selectedLunch.getFixedMenu(), selectedMenu);
         l.setId(selectedLunch.getId());
         int count = 0;
         boolean exists = false;
