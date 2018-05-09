@@ -16,7 +16,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         SharedPrefLoginInfo loginInfo = PreferencesHelper.provideLoginInfoSharePrefService();
 
-        if(!loginInfo.isOrderedToday()) {
+        if(!loginInfo.isSnacksOrderedToday()) {
             Toast.makeText(context, "Snacks Time!! Order Now!!", Toast.LENGTH_SHORT).show();
 
             //Stop sound service to play sound for alarm

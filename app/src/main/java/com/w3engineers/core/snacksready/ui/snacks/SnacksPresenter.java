@@ -19,7 +19,6 @@ import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
 import com.w3engineers.core.util.helper.NetworkUtil;
-import com.w3engineers.core.util.helper.TimeUtil;
 import com.w3engineers.core.util.lib.network.NetworkService;
 
 public class SnacksPresenter extends BasePresenter<SnacksMvpView> {
@@ -30,7 +29,7 @@ public class SnacksPresenter extends BasePresenter<SnacksMvpView> {
     }
 
     public void whatToLoad(){
-        if(sharedPrefLoginInfo.isOrderedToday()){
+        if(sharedPrefLoginInfo.isSnacksOrderedToday()){
             NetworkService.loadOrder(sharedPrefLoginInfo.getOfficeId());
         }
         else loadSnacks();
@@ -61,7 +60,7 @@ public class SnacksPresenter extends BasePresenter<SnacksMvpView> {
         boolean success = remoteResponse.getSuccess() == AppConst.SUCCESS;
 
         if(remoteResponse.getSuccess() == AppConst.SUCCESS) {
-            sharedPrefLoginInfo.updateOrderedToday(true);
+            sharedPrefLoginInfo.updateSnacksOrderedToday(true);
             NetworkService.loadOrder(sharedPrefLoginInfo.getOfficeId());
             msg = "Order placed successfully from IP " + NetworkUtil.getLocalIpAddress();
         }

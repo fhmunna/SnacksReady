@@ -43,6 +43,8 @@ public class Lunch extends BaseObservable {
     private String mAlternateMenu;
 
     @Ignore
+    private String mSelectedAlterMenu = "";
+    @Ignore
     private boolean mIsOrdered;
 
     public Lunch(String mDate, String mTitle, String mFixedMenu, String mAlternateMenu) {
@@ -50,6 +52,7 @@ public class Lunch extends BaseObservable {
         this.mTitle = mTitle;
         this.mFixedMenu = mFixedMenu;
         this.mAlternateMenu = mAlternateMenu;
+        this.mSelectedAlterMenu = "";
         this.mIsOrdered = false;
     }
 
@@ -91,6 +94,14 @@ public class Lunch extends BaseObservable {
 
     public void setAlternateMenu(String alternateMenu) {
         this.mAlternateMenu = alternateMenu;
+    }
+
+    public String getSelectedAlterMenu() {
+        return mSelectedAlterMenu;
+    }
+
+    public void setSelectedAlterMenu(String mSelectedAlterMenu) {
+        this.mSelectedAlterMenu = mSelectedAlterMenu;
     }
 
     public boolean isOrdered() {

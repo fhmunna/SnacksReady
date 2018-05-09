@@ -28,13 +28,14 @@ public class SharedPrefLoginInfo {
     }
 
     public void storeLoginInfo(String officeId, int avatar, boolean isRemembered,
-                               boolean isOrderedToday, boolean isAlarmSet) {
+                               boolean isOrderedToday, boolean isAlarmSet, boolean isLunchConfirmed) {
         editor = preferences.edit();
         editor.putString(SharedPrefProp.SP_OFFICE_ID, officeId);
         editor.putInt(SharedPrefProp.SP_AVATAR, avatar);
         editor.putBoolean(SharedPrefProp.SP_REMEMBERED, isRemembered);
-        editor.putBoolean(SharedPrefProp.SP_ORDERED_TODAY, isOrderedToday);
+        editor.putBoolean(SharedPrefProp.SP_SNACKS_ORDERED_TODAY, isOrderedToday);
         editor.putBoolean(SharedPrefProp.SP_ALARM_SET, isAlarmSet);
+        editor.putBoolean(SharedPrefProp.SP_LUNCH_CONFIRMED, isLunchConfirmed);
         editor.apply();
     }
 
@@ -50,12 +51,16 @@ public class SharedPrefLoginInfo {
         return preferences.getBoolean(SharedPrefProp.SP_REMEMBERED, false);
     }
 
-    public boolean isOrderedToday(){
-        return preferences.getBoolean(SharedPrefProp.SP_ORDERED_TODAY, false);
+    public boolean isSnacksOrderedToday(){
+        return preferences.getBoolean(SharedPrefProp.SP_SNACKS_ORDERED_TODAY, false);
     }
 
     public boolean isAlarmSet(){
         return preferences.getBoolean(SharedPrefProp.SP_ALARM_SET, false);
+    }
+
+    public boolean isLunchConfirmed(){
+        return preferences.getBoolean(SharedPrefProp.SP_LUNCH_CONFIRMED, false);
     }
 
     public void updateOfficeId(String newOfficeId){
@@ -76,15 +81,21 @@ public class SharedPrefLoginInfo {
         editor.apply();
     }
 
-    public void updateOrderedToday(boolean orderedToday){
+    public void updateSnacksOrderedToday(boolean orderedToday){
         editor = preferences.edit();
-        editor.putBoolean(SharedPrefProp.SP_ORDERED_TODAY, orderedToday);
+        editor.putBoolean(SharedPrefProp.SP_SNACKS_ORDERED_TODAY, orderedToday);
         editor.apply();
     }
 
     public void updateAlarmSet(boolean alarmSet){
         editor = preferences.edit();
         editor.putBoolean(SharedPrefProp.SP_ALARM_SET, alarmSet);
+        editor.apply();
+    }
+
+    public void updateLunchConfirmed(boolean lunchConfirmed){
+        editor = preferences.edit();
+        editor.putBoolean(SharedPrefProp.SP_LUNCH_CONFIRMED, lunchConfirmed);
         editor.apply();
     }
 

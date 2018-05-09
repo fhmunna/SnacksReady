@@ -22,7 +22,7 @@ import com.w3engineers.core.util.helper.Glider;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.helper.ViewUtils;
 import com.w3engineers.core.util.lib.network.NetworkService;
-import com.w3engineers.core.util.lib.network.SnacksCallBack;
+import com.w3engineers.core.util.lib.network.callback.SnacksCallBack;
 
 import java.util.List;
 

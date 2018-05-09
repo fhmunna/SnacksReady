@@ -21,6 +21,8 @@ public class User {
     private String name;
     @SerializedName("team")
     private String team;
+    @SerializedName("lunch_confirmed")
+    private boolean lunchConfirmed;
 
     /**
      * No args constructor for use in serialization
@@ -29,19 +31,13 @@ public class User {
     public User() {
     }
 
-    /**
-     *
-     * @param sl
-     * @param officeId
-     * @param name
-     * @param team
-     */
-    public User(String sl, String officeId, String name, String team) {
+    public User(String sl, String officeId, String name, String team, boolean lunchConfirmed) {
         super();
         this.sl = sl;
         this.officeId = officeId;
         this.name = name;
         this.team = team;
+        this.lunchConfirmed = lunchConfirmed;
     }
 
     public String getSl() {
@@ -76,4 +72,11 @@ public class User {
         this.team = team;
     }
 
+    public boolean isLunchConfirmed() {
+        return lunchConfirmed;
+    }
+
+    public void setLunchConfirmed(boolean lunchConfirmed) {
+        this.lunchConfirmed = lunchConfirmed;
+    }
 }

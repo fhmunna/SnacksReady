@@ -14,7 +14,7 @@ import com.w3engineers.core.snacksready.ui.base.BaseFragment;
 import com.w3engineers.core.snacksready.databinding.FragmentAdminBinding;
 import com.w3engineers.core.util.helper.DialogUtil;
 import com.w3engineers.core.util.helper.Toaster;
-import com.w3engineers.core.util.lib.network.AdminValidatorCallBack;
+import com.w3engineers.core.util.lib.network.callback.AdminValidatorCallBack;
 import com.w3engineers.core.util.lib.network.NetworkService;
 
 public class AdminFragment extends BaseFragment<AdminMvpView, AdminPresenter> implements AdminMvpView,

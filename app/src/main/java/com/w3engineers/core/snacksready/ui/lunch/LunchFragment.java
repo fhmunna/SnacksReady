@@ -10,19 +10,15 @@ import android.view.animation.AnimationUtils;
 import com.w3engineers.core.snacksready.R;
 import com.w3engineers.core.snacksready.data.local.appconst.AppConst;
 import com.w3engineers.core.snacksready.data.local.lunch.Lunch;
-import com.w3engineers.core.snacksready.data.remote.remoteconst.RemoteConst;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteLunchList;
-import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteOrder;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
-import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
 import com.w3engineers.core.snacksready.databinding.FragmentLunchBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseFragment;
 import com.w3engineers.core.snacksready.ui.base.ItemClickListener;
 import com.w3engineers.core.util.helper.DialogUtil;
-import com.w3engineers.core.util.helper.Glider;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.helper.ViewUtils;
-import com.w3engineers.core.util.lib.network.LunchCallBack;
+import com.w3engineers.core.util.lib.network.callback.LunchCallBack;
 import com.w3engineers.core.util.lib.network.NetworkService;
 
 import java.util.ArrayList;
@@ -41,7 +37,7 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     private AlertDialog loadingDialog, orderDialog;
 
     private List<Lunch> orderedItems = new ArrayList<>();
-    private int numOfItems = 10;
+    private int numOfItems;
 
     public LunchFragment() {
         // Required empty public constructor
@@ -76,13 +72,14 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
         super.onResume();
         if(getLunchAdapter()!=null) getLunchAdapter().clear();
 
+        NetworkService.setLunchCallBack(this);
         loadingDialog = DialogUtil.loadingDialogBuilder(getContext(), "Loading...");
         presenter.whatToLoad();
     }
 
     @Override
     protected void stopUI() {
-        NetworkService.removeSnacksCallBack();
+        NetworkService.removeLunchCallBack();
     }
 
     @Override
@@ -109,11 +106,11 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
         getActivity().runOnUiThread(()->{
             makeInvisibleAll();
             if(lunchList == null || lunchList.size() == 0) {
-                numOfItems = lunchList.size();
                 fragmentLunchBinding.tvNoLunch.setVisibility(View.VISIBLE);
                 fragmentLunchBinding.tvNoLunch.setText("No snacks yet. Keep patient.");
             }
             else {
+                numOfItems = lunchList.size();
                 fragmentLunchBinding.rvLunch.setVisibility(View.VISIBLE);
                 LunchAdapter lunchAdapter = getLunchAdapter();
 
@@ -170,8 +167,9 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
 
     @Override
     public void onConfirmLunch(RemoteResponse remoteResponse) {
-        if(loadingDialog != null) loadingDialog.dismiss();
+        if(orderDialog != null) orderDialog.dismiss();
 
+        presenter.handleRemoteLunchOrderConfirmationResponse(remoteResponse);
     }
 
     @Override
@@ -187,18 +185,22 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     }
 
     @Override
-    public void onSelected(int position, Lunch selectedLunch) {
-        int count = 1;
+    public void onSelected(int position, Lunch selectedLunch, String selectedMenu) {
+        Lunch l = new Lunch(selectedLunch.getDate(), selectedLunch.getTitle(),
+                selectedLunch.getFixedMenu(), selectedMenu);
+        l.setId(selectedLunch.getId());
+        int count = 0;
         boolean exists = false;
         for(Lunch lunch : orderedItems){
             if(lunch.getId() == selectedLunch.getId()){
-                orderedItems.add(count, selectedLunch);
+                orderedItems.remove(count);
+                orderedItems.add(l);
                 exists = true;
                 break;
             }
             count++;
         }
-        if(!exists) orderedItems.add(selectedLunch);
+        if(!exists) orderedItems.add(l);
     }
 
     @Override
@@ -249,8 +251,8 @@ public class LunchFragment extends BaseFragment<LunchMvpView, LunchPresenter> im
     @Override
     public void onClickPositive(int flag) {
         if(flag == DialogUtil.FLAG_CONFIRM) {
-            orderDialog = DialogUtil.loadingDialogBuilder(getContext(), "Confirming order ...");
-            presenter.confirmLunch();
+            orderDialog = DialogUtil.loadingDialogBuilder(getContext(), "Confirming...");
+            presenter.confirmLunch(orderedItems);
         }
     }
 

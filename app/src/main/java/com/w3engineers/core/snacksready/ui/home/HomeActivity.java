@@ -83,14 +83,17 @@ public class HomeActivity extends BaseActivity<HomeMvpView, HomePresenter> imple
     }
 
     @Override
-    public void onLoadLocalData(boolean isOrderSet, boolean isRemainderSet, String timeLeft) {
+    public void onLoadLocalData(boolean isSnacksOrdered, boolean isLunchConfirmed,
+                                boolean isRemainderSet, String timeLeftSnacks, String badgeLunch) {
         runOnUiThread(()->{
             int color = Color.RED;
-
-            if(isOrderSet) color = Color.BLUE;
-
-            itemOrderSnacks.withBadge(timeLeft).withBadgeStyle(new BadgeStyle().withColor(color));
+            if(isSnacksOrdered) color = Color.BLUE;
+            itemOrderSnacks.withBadge(timeLeftSnacks).withBadgeStyle(new BadgeStyle().withColor(color));
             itemSnacksRemainder.withChecked(isRemainderSet);
+
+            if(!isLunchConfirmed) color = Color.RED;
+            else color = Color.BLUE;
+            itemConfirmLunch.withBadge(badgeLunch).withBadgeStyle(new BadgeStyle().withColor(color));
         });
     }
 

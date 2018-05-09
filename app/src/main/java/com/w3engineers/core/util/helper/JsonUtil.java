@@ -35,15 +35,15 @@ public class JsonUtil {
     private JsonUtil() {
     }
 
-    public String toJsonString(Object object){
+    public static String toJsonString(Object object){
         return new Gson().toJson(object);
     }
 
-    public Object fromJsonToObject(String json, Type type){
+    public static Object fromJsonToObject(String json, Type type){
         return new Gson().fromJson(json, type);
     }
 
-    public String toJsonString(List<Object> objectList){
+    public static String toJsonString(List<Object> objectList){
         return new Gson().toJson(objectList);
     }
 }

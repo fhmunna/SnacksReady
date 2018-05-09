@@ -53,6 +53,11 @@ public class LunchAdapter extends BaseAdapter<Lunch> {
         return new LunchViewHolder(itemLunchBinding);
     }
 
+    @Override
+    public void onBindViewHolder(BaseViewHolder<Lunch> holder, int position) {
+        super.onBindViewHolder(holder, position);
+    }
+
     private class LunchViewHolder extends BaseViewHolder<Lunch>{
         ItemLunchBinding mItemLunchBinding;
 
@@ -60,7 +65,15 @@ public class LunchAdapter extends BaseAdapter<Lunch> {
             super(itemLunchBinding.getRoot());
             this.mItemLunchBinding = itemLunchBinding;
 
-            setClickListener(mItemLunchBinding.itemContainer);
+            mItemLunchBinding.rgMenu.setOnCheckedChangeListener((group, checkedId) -> {
+                RadioButton radioButton = group.findViewById(checkedId);
+                if(radioButton != null){
+                    String selectedAlterMenu = radioButton.getText().toString();
+                    getItem(getAdapterPosition()).setSelectedAlterMenu(selectedAlterMenu);
+                    if(mListener != null) mListener.onSelected(getAdapterPosition(),
+                            getItem(getAdapterPosition()), selectedAlterMenu);
+                }
+            });
         }
 
         @Override
@@ -70,28 +83,23 @@ public class LunchAdapter extends BaseAdapter<Lunch> {
 
             if(!item.getAlternateMenu().equals("")){
                 String[] alterMenu = item.getAlternateMenu().split(",");
-                if(mItemLunchBinding.rgMenu.getChildCount() == 0){
-                    for (String str: alterMenu) {
-                        if(!str.equals("")) mItemLunchBinding.rgMenu.addView(createRadioButton(str));
-                    }
+                mItemLunchBinding.rgMenu.removeAllViews();
+                for (String str : alterMenu) {
+                    boolean checked = false;
+                    String selectedAlterMenu = item.getSelectedAlterMenu();
+                    if(selectedAlterMenu != null && selectedAlterMenu.equalsIgnoreCase(str))
+                        checked = true;
+                    mItemLunchBinding.rgMenu.addView(createRadioButton(str, checked));
                 }
             }
-
-            mItemLunchBinding.rgMenu.setOnCheckedChangeListener((group, checkedId) -> {
-                RadioButton radioButton = group.findViewById(checkedId);
-                Lunch lunch = getItem(getAdapterPosition());
-                lunch.setAlternateMenu(radioButton.getText().toString());
-                if(mListener != null) mListener.onSelected(getAdapterPosition(), lunch);
-            });
         }
 
         @Override
         public void onClick(View view) {
-            notifyDataSetChanged();
         }
     }
 
-    private RadioButton createRadioButton(String text){
+    private RadioButton createRadioButton(String text, boolean isChecked){
         RadioButton rb;
         ColorStateList colorStateList = new ColorStateList(
             new int[][]{
@@ -106,13 +114,13 @@ public class LunchAdapter extends BaseAdapter<Lunch> {
         rb = new RadioButton(AppController.getContext());
         rb.setText(text);
         rb.setTextColor(Color.WHITE);
-        rb.setChecked(false);
+        rb.setChecked(isChecked);
         CompoundButtonCompat.setButtonTintList(rb, colorStateList);
 
         return rb;
     }
 
     public interface OnLunchSelected{
-        void onSelected(int position, Lunch selectedLunch);
+        void onSelected(int position, Lunch selectedLunch, String selectedMenu);
     }
 }

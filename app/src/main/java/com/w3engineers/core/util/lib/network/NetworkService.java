@@ -19,6 +19,11 @@ import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteOrder;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteSnacks;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
+import com.w3engineers.core.util.helper.NetworkUtil;
+import com.w3engineers.core.util.lib.network.callback.AdminValidatorCallBack;
+import com.w3engineers.core.util.lib.network.callback.LunchCallBack;
+import com.w3engineers.core.util.lib.network.callback.SnacksCallBack;
+import com.w3engineers.core.util.lib.network.callback.ValidityCheckerCallBack;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -185,6 +190,30 @@ public class NetworkService {
 
             @Override
             public void onFailure(@NonNull Call<RemoteLunchList> call, @NonNull Throwable t) {
+                Log.d(NetworkService.class.getSimpleName(), "Failed::" + t.toString());
+                if(mLunchCallBack != null) mLunchCallBack.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public static void saveOrderedLunch(String officeId, String lunchJson){
+        Call<RemoteResponse> call = networkClientApi.saveOrderedLunch(officeId, lunchJson,
+                NetworkUtil.getLocalIpAddress());
+        call.enqueue(new Callback<RemoteResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RemoteResponse> call, @NonNull Response<RemoteResponse> response) {
+                if (response.isSuccessful()) {
+                    RemoteResponse remoteResponse = response.body();
+                    Log.d(NetworkService.class.getSimpleName(), remoteResponse.getMessage());
+                    if(mLunchCallBack != null) mLunchCallBack.onConfirmLunch(remoteResponse);
+                } else {
+                    Log.d(NetworkService.class.getSimpleName(), response.errorBody().toString());
+                    if(mLunchCallBack != null) mLunchCallBack.onFailure("Failed to get data. May be Api problem.");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RemoteResponse> call, @NonNull Throwable t) {
                 Log.d(NetworkService.class.getSimpleName(), "Failed::" + t.toString());
                 if(mLunchCallBack != null) mLunchCallBack.onFailure(t.getMessage());
             }

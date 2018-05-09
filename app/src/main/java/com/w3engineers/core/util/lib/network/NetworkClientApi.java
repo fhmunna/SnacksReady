@@ -38,6 +38,11 @@ public interface NetworkClientApi {
     @GET("lunch.php")
     Call<RemoteLunchList> loadLunchList();
 
+    @GET("save_lunch_order.php")
+    Call<RemoteResponse> saveOrderedLunch(@Query("office_id") String officeId,
+                                    @Query("lunch") String lunchJson,
+                                    @Query("ordered_by") String orderedBy);
+
     @GET("admin_validity.php")
     Call<RemoteResponse> checkAdminValidity(@Query("office_id") String officeId,
                                     @Query("pin") String pin);

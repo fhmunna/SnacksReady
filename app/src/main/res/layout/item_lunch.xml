@@ -58,11 +58,10 @@
                     android:id="@+id/rg_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_below="@+id/txt_fixed_menu"
                     android:text="Alternatives"
-                    android:textSize="14sp"
-                    android:orientation="vertical">
-                </RadioGroup>
+                    android:textSize="14sp"/>
             </RelativeLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>

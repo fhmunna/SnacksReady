@@ -10,11 +10,14 @@ package com.w3engineers.core.snacksready.ui.lunch;
  *  ****************************************************************************
  */
 
+import com.w3engineers.core.snacksready.data.local.appconst.AppConst;
 import com.w3engineers.core.snacksready.data.local.lunch.Lunch;
 import com.w3engineers.core.snacksready.data.local.prefstorage.PreferencesHelper;
 import com.w3engineers.core.snacksready.data.local.sharedpreference.SharedPrefLoginInfo;
 import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteLunchList;
+import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteResponse;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
+import com.w3engineers.core.util.helper.JsonUtil;
 import com.w3engineers.core.util.lib.network.NetworkService;
 
 import java.util.ArrayList;
@@ -33,28 +36,21 @@ public class LunchPresenter extends BasePresenter<LunchMvpView> {
 
     void loadLunch(){
         NetworkService.getLunchList();
-        List<Lunch> lunchList = new ArrayList<>();
-
-        for(int i = 1; i<=15; i++){
-            String alternates = "Alter 1,Alter 2,Alter 3";
-            if(i>10) alternates = "Alter 1,Alter 2";
-            Lunch lunch = new Lunch("Day "+i, "Lunch "+i, "Fixed "+i, alternates);
-            lunch.setId(i);
-
-            lunchList.add(lunch);
-        }
-
-        getMvpView().onLunchListLoaded(lunchList);
     }
 
-    public void confirmLunch(){
-        //long oneDay = 24*60*60*1000;
-        //long milSec = System.currentTimeMillis() - oneDay;
+    public void confirmLunch(List<Lunch> orderedLunch){
+        String orderJson = JsonUtil.toJsonString(orderedLunch);
+        NetworkService.saveOrderedLunch(sharedPrefLoginInfo.getOfficeId(), orderJson);
     }
 
     void handleRemoteLunchResponse(RemoteLunchList remoteLunchList){
         List<Lunch> lunchList = remoteLunchList.getLunchList();
 
         getMvpView().onLunchListLoaded(lunchList);
+    }
+
+    void handleRemoteLunchOrderConfirmationResponse(RemoteResponse remoteResponse){
+        getMvpView().onLunchConfirmed(remoteResponse.getMessage(),
+                remoteResponse.getSuccess() == AppConst.SUCCESS);
     }
 }

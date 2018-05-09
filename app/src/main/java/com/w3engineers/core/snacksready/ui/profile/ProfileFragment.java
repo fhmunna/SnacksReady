@@ -17,7 +17,7 @@ import com.w3engineers.core.snacksready.ui.splash.SplashActivity;
 import com.w3engineers.core.util.helper.DialogUtil;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.lib.network.NetworkService;
-import com.w3engineers.core.util.lib.network.ValidityCheckerCallBack;
+import com.w3engineers.core.util.lib.network.callback.ValidityCheckerCallBack;
 
 public class ProfileFragment extends BaseFragment<ProfileMvpView, ProfilePresenter> implements ProfileMvpView, View.OnClickListener,
         DialogUtil.DialogButtonListener, ValidityCheckerCallBack {
@@ -137,6 +137,7 @@ public class ProfileFragment extends BaseFragment<ProfileMvpView, ProfilePresent
             fragmentProfileBinding.txtSnacksMsg.setText("Snacks: " + snacksMessage);
             if(snackOrdered) fragmentProfileBinding.btnOrderSnack.setText("View");
 
+            fragmentProfileBinding.txtLunchMsg.setText("Lunch: " + lunchMessage);
             if(lunchOrdered) fragmentProfileBinding.btnConfirmLunch.setText("View");
         });
     }

@@ -33,12 +33,11 @@ import com.w3engineers.core.snacksready.data.remote.remotemodel.RemoteUser;
 import com.w3engineers.core.snacksready.databinding.ActivitySplashBinding;
 import com.w3engineers.core.snacksready.ui.base.BaseActivity;
 import com.w3engineers.core.snacksready.ui.home.HomeActivity;
-import com.w3engineers.core.snacksready.ui.main.MainActivity;
 import com.w3engineers.core.util.helper.DialogUtil;
 import com.w3engineers.core.util.helper.Logger;
 import com.w3engineers.core.util.helper.Toaster;
 import com.w3engineers.core.util.lib.network.NetworkService;
-import com.w3engineers.core.util.lib.network.ValidityCheckerCallBack;
+import com.w3engineers.core.util.lib.network.callback.ValidityCheckerCallBack;
 
 public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter> implements SplashMvpView,
         ValidityCheckerCallBack {
@@ -251,7 +250,8 @@ public class SplashActivity extends BaseActivity<SplashMvpView, SplashPresenter>
             }
             else if(FLAG_USER_TYPE == OLD_USER) {
                 Logger.log("processOldUser:: orderedToday: " + remoteUser.isOrderedToday());
-                presenter.processOldUser(isRemembered, remoteUser.isOrderedToday());
+                presenter.processOldUser(isRemembered, remoteUser.isOrderedToday(),
+                        remoteUser.getUser().isLunchConfirmed());
             }
         }
     }

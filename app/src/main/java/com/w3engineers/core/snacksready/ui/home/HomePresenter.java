@@ -1,8 +1,5 @@
 package com.w3engineers.core.snacksready.ui.home;
 
-import android.app.PendingIntent;
-import android.content.Intent;
-
 import com.w3engineers.core.snacksready.data.local.prefstorage.PreferencesHelper;
 import com.w3engineers.core.snacksready.data.local.sharedpreference.SharedPrefLoginInfo;
 import com.w3engineers.core.snacksready.ui.base.BasePresenter;
@@ -19,23 +16,27 @@ public class HomePresenter extends BasePresenter<HomeMvpView>{
     }
 
     void loadLocalData(){
-        String timeLeft = "";
-        if(!loginInfo.isOrderedToday()){
+        String timeLeftSnacks = "";
+        if(!loginInfo.isSnacksOrderedToday()){
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, 12);
             calendar.set(Calendar.MINUTE, 0);
             long differ = TimeUtil.differ2(calendar.getTimeInMillis());
             if(differ > 0) {
                 differ = differ/1000;
-                if(differ>0 && differ<60) timeLeft = differ + " seconds left!";
-                else if(differ>59 && differ<3600) timeLeft = differ/60 + " min left!";
-                else timeLeft = differ/3600 + " hour left!";
+                if(differ>0 && differ<60) timeLeftSnacks = differ + " seconds left!";
+                else if(differ>59 && differ<3600) timeLeftSnacks = differ/60 + " min left!";
+                else timeLeftSnacks = differ/3600 + " hour left!";
             }
-            else timeLeft = "Time's up!";
+            else timeLeftSnacks = "Time's up!";
         }
-        else timeLeft = "Confirmed!";
+        else timeLeftSnacks = "Confirmed!";
 
-        getMvpView().onLoadLocalData(loginInfo.isOrderedToday(), loginInfo.isAlarmSet(), timeLeft);
+        String badgeLunch = "Confirm now!";
+        if(loginInfo.isLunchConfirmed()) badgeLunch = "Confirmed";
+
+        getMvpView().onLoadLocalData(loginInfo.isSnacksOrderedToday(), loginInfo.isLunchConfirmed(),
+                loginInfo.isAlarmSet(), timeLeftSnacks, badgeLunch);
     }
 
     void setSnacksRemainder() {

@@ -35,7 +35,7 @@ public class ProfilePresenter extends BasePresenter<ProfileMvpView> {
 
     void loadHomeData(){
         String timeLeft = "";
-        if(!sharedPrefLoginInfo.isOrderedToday()){
+        if(!sharedPrefLoginInfo.isSnacksOrderedToday()){
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, 12);
             calendar.set(Calendar.MINUTE, 0);
@@ -50,7 +50,11 @@ public class ProfilePresenter extends BasePresenter<ProfileMvpView> {
         }
         else timeLeft = "Confirmed!";
 
-        getMvpView().onLoadHomeData(sharedPrefLoginInfo.isOrderedToday(), timeLeft, false, "");
+        String badgeLunch = "Confirm now";
+        if(sharedPrefLoginInfo.isLunchConfirmed()) badgeLunch = "View";
+
+        getMvpView().onLoadHomeData(sharedPrefLoginInfo.isSnacksOrderedToday(), timeLeft,
+                sharedPrefLoginInfo.isLunchConfirmed(), badgeLunch);
     }
 
     void handleUserData(RemoteUser remoteUser){
